@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My First Amber Project</title>
+    <script src="../../js/amber.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    loadAmber({
+      files: [],
+      prefix: 'projects/hello/js',
+      ready: function() {
+        $(function() {
+//          smalltalk.Hello._new()._begin();
+        });
+      }}); 
+    </script>
+  </head>
+  <body>
+    <article>
+      <h1>My First Amber Project</h1>
+      <button onclick="smalltalk.Browser._open()">class browser</button>
+      <button id="sayHello">say hello</button>
+    </article>
+  </body>
+</html>
+

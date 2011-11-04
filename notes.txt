@@ -1,0 +1,13 @@
+
+waht is the class browser button what does it do?
+
+how big is the footprint?
+
+what are
+./js:
+HelloApp.deploy.js
+HelloApp.js
+
+./st:
+HelloApp.st
+

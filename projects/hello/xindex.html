@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My First Amber Project</title>
+    <script src="../../js/amber.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    loadAmber({
+      files: ['HelloApp.js'],
+      prefix: 'projects/hello/js',
+      ready: function() {
+      // jQuery ready - initializes a Hello object
+        $(function() {
+          smalltalk.Hello._new()._begin();
+          // smalltalk syntax translated to javascript
+              // class mapped identically ( to javascript constuctors ) 
+                  // js/HelloApp.js
+                  // commit -> st/HelloApp.st -> compiler -> js/HelloApp.js
+              //   methods prefixed with _ and invoked
+              // . in between everything
+              // smalltalk Hello _new _begin # coffeescript
+      });
+    }}); 
+    </script>
+  </head>
+  <body>
+    <article>
+      <h1>My First Amber Project</h1>
+      <button onclick="smalltalk.Browser._open()">class browser</button>
+      <button id="sayHello">say hello</button>
+    </article>
+  </body>
+</html>
