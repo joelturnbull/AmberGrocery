@@ -74,11 +74,12 @@ initialize
 !
 
 renderOn: html
+	html div with: [ self renderSaveButtonOn: html ].
 
 	html div with: self recipe name.
 	recipe ingredients do: [ :anIngredient |
   		( IngredientView on: anIngredient ) renderOn: html ].
-	self renderIngredientInputOn: html
+	self renderIngredientInputOn: html.
 !
 
 recipe
@@ -95,10 +96,7 @@ renderIngredientInputOn: html
         	id: 'addIngredient';
 		with: 'Add Ingredient'.
 
-	button asJQuery click: [ 
-          	self recipe add: ( Ingredient named: input asJQuery val ). 
-          	self refresh 
-        ]
+	self addToRecipeValueOf: input onClickOf: button.
 !
 
 refresh
@@ -110,6 +108,42 @@ refresh
 selector
 
 	^ '#recipe' asJQuery
+!
+
+addToRecipeValueOf: input onClickOf: button
+
+	button asJQuery click: [ 
+          	self recipe add: ( Ingredient named: input asJQuery val ). 
+          	self refresh 
+        ]
+!
+
+renderSaveButtonOn: html
+| button |
+
+	button := html button
+		id: 'saveRecipe';
+		with: 'Save'.
+	
+	self saveRecipeOnClickOf: button.
+!
+
+saveRecipeOnClickOf: button
+
+	button asJQuery click: [ self persistRecipe ].
+!
+
+persistRecipe
+| result data |
+
+data := '{ "name": "Tacos", "ingredients": [] }'.
+result := jQuery
+      ajax: 'http://localhost/couchdb/recipes/'
+      options: #{
+				'type' -> 'POST'.
+				'contentType' -> 'application/json'.
+				'data' -> '{"name":"BLTxs"}'
+	}.
 ! !
 
 TestCase subclass: #IngredientTest
