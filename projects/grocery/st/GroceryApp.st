@@ -63,46 +63,20 @@ named: aName
 named: aName ingredients: anArray
 
 	^ self new initializeNamed: aName ingredients: anArray
+!
+
+fromJSON: aJSONObject
+| ingredients |
+
+	ingredients := aJSONObject ingredients collect: [ :anIngredientJSON | Ingredient fromJSON: anIngredientJSON ].
+	^ self named: aJSONObject name ingredients: ingredients.
 ! !
 
 Widget subclass: #RecipeView
 	instanceVariableNames: 'recipe'
 	category: 'GroceryApp'!
 
-!RecipeView methodsFor: 'not yet classified'!
-
-initialize
-
-	recipe := CouchDoc
-			on: self recipeFixture
-			id: '62dbe43584f7ba52dc7b268479007a2c'
-			revision: '5-66f4d34a9a1390c7ffba0e6dff5d346f'.
-!
-
-renderOn: html
-	html div with: self recipe name.
-	recipe ingredients do: [ :anIngredient |
-  		( IngredientView on: anIngredient ) renderOn: html ].
-	self renderIngredientInputOn: html.
-	html div with: [ self renderSaveButtonOn: html ].
-!
-
-recipe
-
-	^ recipe
-!
-
-renderIngredientInputOn: html
-| input button |
-
-	input := html input
-		id: 'ingredientInput'.
-        button := html button 
-        	id: 'addIngredient';
-		with: 'Add Ingredient'.
-
-	self addToRecipeValueOf: input onClickOf: button.
-!
+!RecipeView methodsFor: 'action'!
 
 refresh
 
@@ -110,27 +84,12 @@ refresh
 	self appendToJQuery: self selector.
 !
 
-selector
-
-	^ '#recipe' asJQuery
-!
-
 addToRecipeValueOf: input onClickOf: button
 
 	button asJQuery click: [ 
           	self recipe add: ( Ingredient named: input asJQuery val ). 
-          	self refresh 
+          	self refreshAt: '#recipe' asJQuery.
         ]
-!
-
-renderSaveButtonOn: html
-| button |
-
-	button := html button
-		id: 'saveRecipe';
-		with: 'Save'.
-	
-	self saveRecipeOnClickOf: button.
 !
 
 saveRecipeOnClickOf: button
@@ -149,13 +108,71 @@ persistRecipe
 		}.
 !
 
-recipeFixture
+refreshAt: aSelector
 
-	^ Recipe 
-		named: 'BLTs'
-		ingredients: ( Array
-			with: ( Ingredient named: '1 Pound of Bacon' )
-			with: ( Ingredient named: '1/2 Head of Lettuce' ))
+	aSelector html: ''. 
+	self appendToJQuery: aSelector.
+! !
+
+!RecipeView methodsFor: 'not yet classified'!
+
+recipe
+
+	^ recipe
+!
+
+selector
+
+	^ '#recipe' asJQuery
+!
+
+initializeOn: aRecipe
+
+	recipe := aRecipe
+! !
+
+!RecipeView methodsFor: 'rendering'!
+
+renderOn: html
+	self renderNameOn: html.
+	self renderIngredientsOn: html.
+	self renderIngredientInputOn: html.
+	self renderSaveButtonOn: html.
+!
+
+renderIngredientInputOn: html
+| input button |
+
+	input := html input
+		id: 'ingredientInput'.
+        button := html button 
+        	id: 'addIngredient';
+		with: 'Add Ingredient'.
+
+	self addToRecipeValueOf: input onClickOf: button.
+!
+
+renderSaveButtonOn: html
+
+	html div with: [ self renderSaveButtonOn: html ].
+!
+
+renderNameOn: html
+
+	html div with: self recipe name.
+!
+
+renderIngredientsOn: html
+
+	recipe ingredients do: [ :anIngredient |
+  		( IngredientView on: anIngredient ) renderOn: html ].
+! !
+
+!RecipeView class methodsFor: 'not yet classified'!
+
+on: aRecipe
+
+	^ self new initializeOn: aRecipe
 ! !
 
 TestCase subclass: #IngredientTest
@@ -192,6 +209,11 @@ name
 named: aName
 
 	^ self new initializeNamed: aName
+!
+
+fromJSON: aJSONObject
+
+	^ self named: aJSONObject name
 ! !
 
 Widget subclass: #IngredientView
@@ -262,5 +284,34 @@ asJSONObject
 on: aModel id: anId revision: aRevision
 
 	^ self new intitializeOn: aModel id: anId revision: aRevision
+! !
+
+Object subclass: #RecipeSearch
+	instanceVariableNames: 'revision'
+	category: 'GroceryApp'!
+
+!RecipeSearch methodsFor: 'not yet classified'!
+
+success: aJSONObject
+| recipe recipeView |
+
+	recipe := CouchDoc
+			on: ( Recipe fromJSON: aJSONObject )
+			id: ( aJSONObject at: '_id' )
+			revision: ( aJSONObject at: '_rev' ). 
+	recipeView := RecipeView on: recipe.
+	recipeView appendToJQuery: ( '#recipe' asJQuery ).
+!
+
+id: anId
+| result |
+	result := jQuery 
+			ajax: 'http://localhost/couchdb/recipes/', anId
+			options: #{
+				'type' -> 'GET'.
+				'dataType' -> 'jsonp'.
+				'success' -> [ :jsonp | self success: jsonp ].
+				'error' -> [window alert: 'error']
+			}.
 ! !
 

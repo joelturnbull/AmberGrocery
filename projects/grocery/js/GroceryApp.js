@@ -156,40 +156,42 @@ referencedClasses: []
 }),
 smalltalk.Recipe.klass);
 
+smalltalk.addMethod(
+unescape('_fromJSON_'),
+smalltalk.method({
+selector: unescape('fromJSON%3A'),
+category: 'not yet classified',
+fn: function (aJSONObject){
+var self=this;
+var ingredients=nil;
+ingredients=smalltalk.send(smalltalk.send(aJSONObject, "_ingredients", []), "_collect_", [(function(anIngredientJSON){return smalltalk.send((smalltalk.Ingredient || Ingredient), "_fromJSON_", [anIngredientJSON]);})]);
+return smalltalk.send(self, "_named_ingredients_", [smalltalk.send(aJSONObject, "_name", []), ingredients]);
+return self;},
+args: ["aJSONObject"],
+source: unescape('fromJSON%3A%20aJSONObject%0A%7C%20ingredients%20%7C%0A%0A%09ingredients%20%3A%3D%20aJSONObject%20ingredients%20collect%3A%20%5B%20%3AanIngredientJSON%20%7C%20Ingredient%20fromJSON%3A%20anIngredientJSON%20%5D.%0A%09%5E%20self%20named%3A%20aJSONObject%20name%20ingredients%3A%20ingredients.'),
+messageSends: ["collect:", "ingredients", "fromJSON:", "named:ingredients:", "name"],
+referencedClasses: ["Ingredient"]
+}),
+smalltalk.Recipe.klass);
+
 
 smalltalk.addClass('RecipeView', smalltalk.Widget, ['recipe'], 'GroceryApp');
-smalltalk.addMethod(
-unescape('_initialize'),
-smalltalk.method({
-selector: unescape('initialize'),
-category: 'not yet classified',
-fn: function (){
-var self=this;
-self['@recipe']=smalltalk.send((smalltalk.CouchDoc || CouchDoc), "_on_id_revision_", [smalltalk.send(self, "_recipeFixture", []), "62dbe43584f7ba52dc7b268479007a2c", unescape("5-66f4d34a9a1390c7ffba0e6dff5d346f")]);
-return self;},
-args: [],
-source: unescape('initialize%0A%0A%09recipe%20%3A%3D%20CouchDoc%0A%09%09%09on%3A%20self%20recipeFixture%0A%09%09%09id%3A%20%2762dbe43584f7ba52dc7b268479007a2c%27%0A%09%09%09revision%3A%20%275-66f4d34a9a1390c7ffba0e6dff5d346f%27.%20'),
-messageSends: ["on:id:revision:", "recipeFixture"],
-referencedClasses: ["CouchDoc"]
-}),
-smalltalk.RecipeView);
-
 smalltalk.addMethod(
 unescape('_renderOn_'),
 smalltalk.method({
 selector: unescape('renderOn%3A'),
-category: 'not yet classified',
+category: 'rendering',
 fn: function (html){
 var self=this;
-smalltalk.send(smalltalk.send(html, "_div", []), "_with_", [smalltalk.send(smalltalk.send(self, "_recipe", []), "_name", [])]);
-smalltalk.send(smalltalk.send(self['@recipe'], "_ingredients", []), "_do_", [(function(anIngredient){return smalltalk.send(smalltalk.send((smalltalk.IngredientView || IngredientView), "_on_", [anIngredient]), "_renderOn_", [html]);})]);
+smalltalk.send(self, "_renderNameOn_", [html]);
+smalltalk.send(self, "_renderIngredientsOn_", [html]);
 smalltalk.send(self, "_renderIngredientInputOn_", [html]);
-smalltalk.send(smalltalk.send(html, "_div", []), "_with_", [(function(){return smalltalk.send(self, "_renderSaveButtonOn_", [html]);})]);
+smalltalk.send(self, "_renderSaveButtonOn_", [html]);
 return self;},
 args: ["html"],
-source: unescape('renderOn%3A%20html%0A%09html%20div%20with%3A%20self%20recipe%20name.%0A%09recipe%20ingredients%20do%3A%20%5B%20%3AanIngredient%20%7C%0A%20%20%09%09%28%20IngredientView%20on%3A%20anIngredient%20%29%20renderOn%3A%20html%20%5D.%0A%09self%20renderIngredientInputOn%3A%20html.%0A%09html%20div%20with%3A%20%5B%20self%20renderSaveButtonOn%3A%20html%20%5D.'),
-messageSends: ["with:", "div", "name", "recipe", "do:", "ingredients", "renderOn:", "on:", "renderIngredientInputOn:", "renderSaveButtonOn:"],
-referencedClasses: ["IngredientView"]
+source: unescape('renderOn%3A%20html%0A%09self%20renderNameOn%3A%20html.%0A%09self%20renderIngredientsOn%3A%20html.%0A%09self%20renderIngredientInputOn%3A%20html.%0A%09self%20renderSaveButtonOn%3A%20html.'),
+messageSends: ["renderNameOn:", "renderIngredientsOn:", "renderIngredientInputOn:", "renderSaveButtonOn:"],
+referencedClasses: []
 }),
 smalltalk.RecipeView);
 
@@ -213,7 +215,7 @@ smalltalk.addMethod(
 unescape('_renderIngredientInputOn_'),
 smalltalk.method({
 selector: unescape('renderIngredientInputOn%3A'),
-category: 'not yet classified',
+category: 'rendering',
 fn: function (html) {
 var self=this;
 var input=nil;
@@ -233,7 +235,7 @@ smalltalk.addMethod(
 unescape('_refresh'),
 smalltalk.method({
 selector: unescape('refresh'),
-category: 'not yet classified',
+category: 'action',
 fn: function () {
 var self=this;
 smalltalk.send(smalltalk.send(self, "_selector", []), "_html_", [""]);
@@ -266,14 +268,14 @@ smalltalk.addMethod(
 unescape('_addToRecipeValueOf_onClickOf_'),
 smalltalk.method({
 selector: unescape('addToRecipeValueOf%3AonClickOf%3A'),
-category: 'not yet classified',
-fn: function (input, button) {
+category: 'action',
+fn: function (input, button){
 var self=this;
-smalltalk.send(smalltalk.send(button, "_asJQuery", []), "_click_", [(function(){smalltalk.send(smalltalk.send(self, "_recipe", []), "_add_", [smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", [smalltalk.send(smalltalk.send(input, "_asJQuery", []), "_val", [])])]);return smalltalk.send(self, "_refresh", []);})]);
+smalltalk.send(smalltalk.send(button, "_asJQuery", []), "_click_", [(function(){smalltalk.send(smalltalk.send(self, "_recipe", []), "_add_", [smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", [smalltalk.send(smalltalk.send(input, "_asJQuery", []), "_val", [])])]);return smalltalk.send(self, "_refreshAt_", [smalltalk.send(unescape("%23recipe"), "_asJQuery", [])]);})]);
 return self;},
 args: ["input", "button"],
-source: unescape('addToRecipeValueOf%3A%20input%20onClickOf%3A%20button%0A%0A%09button%20asJQuery%20click%3A%20%5B%20%0A%20%20%20%20%20%20%20%20%20%20%09self%20recipe%20add%3A%20%28%20Ingredient%20named%3A%20input%20asJQuery%20val%20%29.%20%0A%20%20%20%20%20%20%20%20%20%20%09self%20refresh%20%0A%20%20%20%20%20%20%20%20%5D'),
-messageSends: ["click:", "asJQuery", "add:", "recipe", "named:", "val", "refresh"],
+source: unescape('addToRecipeValueOf%3A%20input%20onClickOf%3A%20button%0A%0A%09button%20asJQuery%20click%3A%20%5B%20%0A%20%20%20%20%20%20%20%20%20%20%09self%20recipe%20add%3A%20%28%20Ingredient%20named%3A%20input%20asJQuery%20val%20%29.%20%0A%20%20%20%20%20%20%20%20%20%20%09self%20refreshAt%3A%20%27%23recipe%27%20asJQuery.%0A%20%20%20%20%20%20%20%20%5D'),
+messageSends: ["click:", "asJQuery", "add:", "recipe", "named:", "val", "refreshAt:"],
 referencedClasses: ["Ingredient"]
 }),
 smalltalk.RecipeView);
@@ -282,16 +284,14 @@ smalltalk.addMethod(
 unescape('_renderSaveButtonOn_'),
 smalltalk.method({
 selector: unescape('renderSaveButtonOn%3A'),
-category: 'not yet classified',
-fn: function (html) {
+category: 'rendering',
+fn: function (html){
 var self=this;
-var button=nil;
-button=(function($rec){smalltalk.send($rec, "_id_", ["saveRecipe"]);return smalltalk.send($rec, "_with_", ["Save"]);})(smalltalk.send(html, "_button", []));
-smalltalk.send(self, "_saveRecipeOnClickOf_", [button]);
+smalltalk.send(smalltalk.send(html, "_div", []), "_with_", [(function(){return smalltalk.send(self, "_renderSaveButtonOn_", [html]);})]);
 return self;},
 args: ["html"],
-source: unescape('renderSaveButtonOn%3A%20html%0A%7C%20button%20%7C%0A%0A%09button%20%3A%3D%20html%20button%0A%09%09id%3A%20%27saveRecipe%27%3B%0A%09%09with%3A%20%27Save%27.%0A%09%0A%09self%20saveRecipeOnClickOf%3A%20button.'),
-messageSends: ["id:", "with:", "button", "saveRecipeOnClickOf:"],
+source: unescape('renderSaveButtonOn%3A%20html%0A%0A%09html%20div%20with%3A%20%5B%20self%20renderSaveButtonOn%3A%20html%20%5D.'),
+messageSends: ["with:", "div", "renderSaveButtonOn:"],
 referencedClasses: []
 }),
 smalltalk.RecipeView);
@@ -300,7 +300,7 @@ smalltalk.addMethod(
 unescape('_saveRecipeOnClickOf_'),
 smalltalk.method({
 selector: unescape('saveRecipeOnClickOf%3A'),
-category: 'not yet classified',
+category: 'action',
 fn: function (button) {
 var self=this;
 smalltalk.send(smalltalk.send(button, "_asJQuery", []), "_click_", [(function(){return smalltalk.send(self, "_persistRecipe", []);})]);
@@ -316,7 +316,7 @@ smalltalk.addMethod(
 unescape('_persistRecipe'),
 smalltalk.method({
 selector: unescape('persistRecipe'),
-category: 'not yet classified',
+category: 'action',
 fn: function (){
 var self=this;
 smalltalk.send((typeof jQuery == 'undefined' ? nil : jQuery), "_ajax_options_", [smalltalk.send(unescape("http%3A//localhost/couchdb/recipes/"), "__comma", [smalltalk.send(smalltalk.send(self, "_recipe", []), "_id", [])]), smalltalk.Dictionary._fromPairs_([smalltalk.send("type", "__minus_gt", ["PUT"]),smalltalk.send("contentType", "__minus_gt", [unescape("application/json")]),smalltalk.send("data", "__minus_gt", [smalltalk.send(smalltalk.send(self, "_recipe", []), "_asJSON", [])])])]);
@@ -329,21 +329,86 @@ referencedClasses: []
 smalltalk.RecipeView);
 
 smalltalk.addMethod(
-unescape('_recipeFixture'),
+unescape('_initializeOn_'),
 smalltalk.method({
-selector: unescape('recipeFixture'),
+selector: unescape('initializeOn%3A'),
 category: 'not yet classified',
-fn: function (){
+fn: function (aRecipe){
 var self=this;
-return smalltalk.send((smalltalk.Recipe || Recipe), "_named_ingredients_", ["BLTs", smalltalk.send((smalltalk.Array || Array), "_with_with_", [smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", ["1 Pound of Bacon"]), smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", [unescape("1/2%20Head%20of%20Lettuce")])])]);
+self['@recipe']=aRecipe;
 return self;},
-args: [],
-source: unescape('recipeFixture%0A%0A%09%5E%20Recipe%20%0A%09%09named%3A%20%27BLTs%27%0A%09%09ingredients%3A%20%28%20Array%0A%09%09%09with%3A%20%28%20Ingredient%20named%3A%20%271%20Pound%20of%20Bacon%27%20%29%0A%09%09%09with%3A%20%28%20Ingredient%20named%3A%20%271/2%20Head%20of%20Lettuce%27%20%29%29'),
-messageSends: ["named:ingredients:", "with:with:", "named:"],
-referencedClasses: ["Recipe", "Array", "Ingredient"]
+args: ["aRecipe"],
+source: unescape('initializeOn%3A%20aRecipe%0A%0A%09recipe%20%3A%3D%20aRecipe'),
+messageSends: [],
+referencedClasses: []
 }),
 smalltalk.RecipeView);
 
+smalltalk.addMethod(
+unescape('_renderNameOn_'),
+smalltalk.method({
+selector: unescape('renderNameOn%3A'),
+category: 'rendering',
+fn: function (html){
+var self=this;
+smalltalk.send(smalltalk.send(html, "_div", []), "_with_", [smalltalk.send(smalltalk.send(self, "_recipe", []), "_name", [])]);
+return self;},
+args: ["html"],
+source: unescape('renderNameOn%3A%20html%0A%0A%09html%20div%20with%3A%20self%20recipe%20name.'),
+messageSends: ["with:", "div", "name", "recipe"],
+referencedClasses: []
+}),
+smalltalk.RecipeView);
+
+smalltalk.addMethod(
+unescape('_renderIngredientsOn_'),
+smalltalk.method({
+selector: unescape('renderIngredientsOn%3A'),
+category: 'rendering',
+fn: function (html){
+var self=this;
+smalltalk.send(smalltalk.send(self['@recipe'], "_ingredients", []), "_do_", [(function(anIngredient){return smalltalk.send(smalltalk.send((smalltalk.IngredientView || IngredientView), "_on_", [anIngredient]), "_renderOn_", [html]);})]);
+return self;},
+args: ["html"],
+source: unescape('renderIngredientsOn%3A%20html%0A%0A%09recipe%20ingredients%20do%3A%20%5B%20%3AanIngredient%20%7C%0A%20%20%09%09%28%20IngredientView%20on%3A%20anIngredient%20%29%20renderOn%3A%20html%20%5D.'),
+messageSends: ["do:", "ingredients", "renderOn:", "on:"],
+referencedClasses: ["IngredientView"]
+}),
+smalltalk.RecipeView);
+
+smalltalk.addMethod(
+unescape('_refreshAt_'),
+smalltalk.method({
+selector: unescape('refreshAt%3A'),
+category: 'action',
+fn: function (aSelector){
+var self=this;
+smalltalk.send(aSelector, "_html_", [""]);
+smalltalk.send(self, "_appendToJQuery_", [aSelector]);
+return self;},
+args: ["aSelector"],
+source: unescape('refreshAt%3A%20aSelector%0A%0A%09aSelector%20html%3A%20%27%27.%20%0A%09self%20appendToJQuery%3A%20aSelector.'),
+messageSends: ["html:", "appendToJQuery:"],
+referencedClasses: []
+}),
+smalltalk.RecipeView);
+
+
+smalltalk.addMethod(
+unescape('_on_'),
+smalltalk.method({
+selector: unescape('on%3A'),
+category: 'not yet classified',
+fn: function (aRecipe){
+var self=this;
+return smalltalk.send(smalltalk.send(self, "_new", []), "_initializeOn_", [aRecipe]);
+return self;},
+args: ["aRecipe"],
+source: unescape('on%3A%20aRecipe%0A%0A%09%5E%20self%20new%20initializeOn%3A%20aRecipe'),
+messageSends: ["initializeOn:", "new"],
+referencedClasses: []
+}),
+smalltalk.RecipeView.klass);
 
 
 smalltalk.addClass('IngredientTest', smalltalk.TestCase, [], 'GroceryApp');
@@ -413,6 +478,22 @@ return self;},
 args: ["aName"],
 source: unescape('named%3A%20aName%0A%0A%09%5E%20self%20new%20initializeNamed%3A%20aName'),
 messageSends: ["initializeNamed:", "new"],
+referencedClasses: []
+}),
+smalltalk.Ingredient.klass);
+
+smalltalk.addMethod(
+unescape('_fromJSON_'),
+smalltalk.method({
+selector: unescape('fromJSON%3A'),
+category: 'not yet classified',
+fn: function (aJSONObject){
+var self=this;
+return smalltalk.send(self, "_named_", [smalltalk.send(aJSONObject, "_name", [])]);
+return self;},
+args: ["aJSONObject"],
+source: unescape('fromJSON%3A%20aJSONObject%0A%0A%09%5E%20self%20named%3A%20aJSONObject%20name'),
+messageSends: ["named:", "name"],
 referencedClasses: []
 }),
 smalltalk.Ingredient.klass);
@@ -584,5 +665,45 @@ messageSends: ["intitializeOn:id:revision:", "new"],
 referencedClasses: []
 }),
 smalltalk.CouchDoc.klass);
+
+
+smalltalk.addClass('RecipeSearch', smalltalk.Object, ['revision'], 'GroceryApp');
+smalltalk.addMethod(
+unescape('_success_'),
+smalltalk.method({
+selector: unescape('success%3A'),
+category: 'not yet classified',
+fn: function (aJSONObject){
+var self=this;
+var recipe=nil;
+var recipeView=nil;
+recipe=smalltalk.send((smalltalk.CouchDoc || CouchDoc), "_on_id_revision_", [smalltalk.send((smalltalk.Recipe || Recipe), "_fromJSON_", [aJSONObject]), smalltalk.send(aJSONObject, "_at_", ["_id"]), smalltalk.send(aJSONObject, "_at_", ["_rev"])]);
+recipeView=smalltalk.send((smalltalk.RecipeView || RecipeView), "_on_", [recipe]);
+smalltalk.send(recipeView, "_appendToJQuery_", [smalltalk.send(unescape("%23recipe"), "_asJQuery", [])]);
+return self;},
+args: ["aJSONObject"],
+source: unescape('success%3A%20aJSONObject%0A%7C%20recipe%20recipeView%20%7C%0A%0A%09recipe%20%3A%3D%20CouchDoc%0A%09%09%09on%3A%20%28%20Recipe%20fromJSON%3A%20aJSONObject%20%29%0A%09%09%09id%3A%20%28%20aJSONObject%20at%3A%20%27_id%27%20%29%0A%09%09%09revision%3A%20%28%20aJSONObject%20at%3A%20%27_rev%27%20%29.%20%0A%09recipeView%20%3A%3D%20RecipeView%20on%3A%20recipe.%0A%09recipeView%20appendToJQuery%3A%20%28%20%27%23recipe%27%20asJQuery%20%29.%20%0A'),
+messageSends: ["on:id:revision:", "fromJSON:", "at:", "on:", "appendToJQuery:", "asJQuery"],
+referencedClasses: ["CouchDoc", "Recipe", "RecipeView"]
+}),
+smalltalk.RecipeSearch);
+
+smalltalk.addMethod(
+unescape('_id_'),
+smalltalk.method({
+selector: unescape('id%3A'),
+category: 'not yet classified',
+fn: function (anId){
+var self=this;
+var result=nil;
+result=smalltalk.send((typeof jQuery == 'undefined' ? nil : jQuery), "_ajax_options_", [smalltalk.send(unescape("http%3A//localhost/couchdb/recipes/"), "__comma", [anId]), smalltalk.Dictionary._fromPairs_([smalltalk.send("type", "__minus_gt", ["GET"]),smalltalk.send("dataType", "__minus_gt", ["jsonp"]),smalltalk.send("success", "__minus_gt", [(function(jsonp){return smalltalk.send(self, "_success_", [jsonp]);})]),smalltalk.send("error", "__minus_gt", [(function(){return smalltalk.send((typeof window == 'undefined' ? nil : window), "_alert_", ["error"]);})])])]);
+return self;},
+args: ["anId"],
+source: unescape('id%3A%20anId%0A%7C%20result%20%7C%0A%09result%20%3A%3D%20jQuery%20%0A%09%09%09ajax%3A%20%27http%3A//localhost/couchdb/recipes/%27%2C%20anId%0A%09%09%09options%3A%20%23%7B%0A%09%09%09%09%27type%27%20-%3E%20%27GET%27.%0A%09%09%09%09%27dataType%27%20-%3E%20%27jsonp%27.%0A%09%09%09%09%27success%27%20-%3E%20%5B%20%3Ajsonp%20%7C%20self%20success%3A%20jsonp%20%5D.%0A%09%09%09%09%27error%27%20-%3E%20%5Bwindow%20alert%3A%20%27error%27%5D%0A%09%09%09%7D.'),
+messageSends: ["ajax:options:", unescape("%2C"), unescape("-%3E"), "success:", "alert:"],
+referencedClasses: []
+}),
+smalltalk.RecipeSearch);
+
 
 
