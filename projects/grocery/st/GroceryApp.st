@@ -74,12 +74,11 @@ initialize
 !
 
 renderOn: html
-	html div with: [ self renderSaveButtonOn: html ].
-
 	html div with: self recipe name.
 	recipe ingredients do: [ :anIngredient |
   		( IngredientView on: anIngredient ) renderOn: html ].
 	self renderIngredientInputOn: html.
+	html div with: [ self renderSaveButtonOn: html ].
 !
 
 recipe

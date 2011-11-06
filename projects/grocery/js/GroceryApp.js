@@ -165,16 +165,16 @@ unescape('_renderOn_'),
 smalltalk.method({
 selector: unescape('renderOn%3A'),
 category: 'not yet classified',
-fn: function (html) {
+fn: function (html){
 var self=this;
-smalltalk.send(smalltalk.send(html, "_div", []), "_with_", [(function(){return smalltalk.send(self, "_renderSaveButtonOn_", [html]);})]);
 smalltalk.send(smalltalk.send(html, "_div", []), "_with_", [smalltalk.send(smalltalk.send(self, "_recipe", []), "_name", [])]);
 smalltalk.send(smalltalk.send(self['@recipe'], "_ingredients", []), "_do_", [(function(anIngredient){return smalltalk.send(smalltalk.send((smalltalk.IngredientView || IngredientView), "_on_", [anIngredient]), "_renderOn_", [html]);})]);
 smalltalk.send(self, "_renderIngredientInputOn_", [html]);
+smalltalk.send(smalltalk.send(html, "_div", []), "_with_", [(function(){return smalltalk.send(self, "_renderSaveButtonOn_", [html]);})]);
 return self;},
 args: ["html"],
-source: unescape('renderOn%3A%20html%0A%09html%20div%20with%3A%20%5B%20self%20renderSaveButtonOn%3A%20html%20%5D.%0A%0A%09html%20div%20with%3A%20self%20recipe%20name.%0A%09recipe%20ingredients%20do%3A%20%5B%20%3AanIngredient%20%7C%0A%20%20%09%09%28%20IngredientView%20on%3A%20anIngredient%20%29%20renderOn%3A%20html%20%5D.%0A%09self%20renderIngredientInputOn%3A%20html.%0A'),
-messageSends: ["with:", "div", "renderSaveButtonOn:", "name", "recipe", "do:", "ingredients", "renderOn:", "on:", "renderIngredientInputOn:"],
+source: unescape('renderOn%3A%20html%0A%09html%20div%20with%3A%20self%20recipe%20name.%0A%09recipe%20ingredients%20do%3A%20%5B%20%3AanIngredient%20%7C%0A%20%20%09%09%28%20IngredientView%20on%3A%20anIngredient%20%29%20renderOn%3A%20html%20%5D.%0A%09self%20renderIngredientInputOn%3A%20html.%0A%09html%20div%20with%3A%20%5B%20self%20renderSaveButtonOn%3A%20html%20%5D.'),
+messageSends: ["with:", "div", "name", "recipe", "do:", "ingredients", "renderOn:", "on:", "renderIngredientInputOn:", "renderSaveButtonOn:"],
 referencedClasses: ["IngredientView"]
 }),
 smalltalk.RecipeView);
