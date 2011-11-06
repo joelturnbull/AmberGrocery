@@ -27,12 +27,6 @@ Object subclass: #Recipe
 
 !Recipe methodsFor: 'not yet classified'!
 
-initializeNamed: aName
-
-	name := aName.
-	ingredients := Array new.
-!
-
 name
 
 	^  name
@@ -51,13 +45,42 @@ includes: anIngredient
 ingredients
 
 	^ ingredients copy
+!
+
+dbid
+
+	^ self db id
+!
+
+asJSON
+
+	^ self asVersionedRecipe asJSON
+!
+
+asVersionedRecipe
+
+	^ VersionedRecipe
+		named: self name
+		ingredients: self ingredients
+		revision: self db revision
+!
+
+initializeNamed: aName ingredients: anArray
+
+	name := aName.
+	ingredients := anArray.
 ! !
 
 !Recipe class methodsFor: 'not yet classified'!
 
 named: aName
 
-	^ self new initializeNamed: aName
+	^ self named: aName  ingredients: Array new
+!
+
+named: aName ingredients: anArray
+
+	^ self new initializeNamed: aName ingredients: anArray
 ! !
 
 Widget subclass: #RecipeView
@@ -68,9 +91,10 @@ Widget subclass: #RecipeView
 
 initialize
 
-	recipe := Recipe named: 'BLTs'.
-	recipe add: ( Ingredient named: '1 Pound of Bacon' ).
-	recipe add: ( Ingredient named: '1/2 Head of Lettuce' ).
+	recipe := CouchDoc
+			on: self recipeFixture
+			id: ''
+			revision: ''
 !
 
 renderOn: html
@@ -133,16 +157,23 @@ saveRecipeOnClickOf: button
 !
 
 persistRecipe
-| result data |
 
-data := '{ "name": "Tacos", "ingredients": [] }'.
-result := jQuery
-      ajax: 'http://localhost/couchdb/recipes/'
-      options: #{
-				'type' -> 'POST'.
+	jQuery
+      		ajax: 'http://localhost/couchdb/recipes/', recipe id
+      		options: #{
+				'type' -> 'PUT'.
 				'contentType' -> 'application/json'.
-				'data' -> '{"name":"BLTxs"}'
-	}.
+				'data' -> recipe asJSON
+		}.
+!
+
+recipeFixture
+
+	^ Recipe 
+		named: 'BLTs'
+		ingredients: ( Array
+			with: ( Ingredient named: '1 Pound of Bacon' )
+			with: ( Ingredient named: '1/2 Head of Lettuce' ))
 ! !
 
 TestCase subclass: #IngredientTest
@@ -207,5 +238,56 @@ renderOn: html
 on: anIngredient
 
 	^ self new initializeOn: anIngredient
+! !
+
+Recipe subclass: #VersionedRecipe
+	instanceVariableNames: 'revision'
+	category: 'GroceryApp'!
+
+!VersionedRecipe methodsFor: 'not yet classified'!
+
+initializeNamed: aName ingredients: anArray revision: aRevision
+
+	name := aName.
+	ingredients := anArray.
+	revision := aRevision.
+! !
+
+!VersionedRecipe class methodsFor: 'not yet classified'!
+
+named: aName ingredients: anArray revision: aRevision
+
+	^ self new initializeNamed: aName ingredients: anArray revision: aRevision
+! !
+
+Object subclass: #CouchDoc
+	instanceVariableNames: 'model id revision'
+	category: 'GroceryApp'!
+
+!CouchDoc methodsFor: 'not yet classified'!
+
+intitializeOn: aModel id: anId revision: aRevision
+
+	model := aModel.
+	id := anId.
+        revision := aRevision.
+!
+
+name
+	^ model name
+!
+
+doesNotUnderstand: aMessage
+
+	^ model 
+		perform: aMessage selector
+		withArguments: aMessage arguments
+! !
+
+!CouchDoc class methodsFor: 'not yet classified'!
+
+on: aModel id: anId revision: aRevision
+
+	^ self new intitializeOn: aModel id: anId revision: aRevision
 ! !
 

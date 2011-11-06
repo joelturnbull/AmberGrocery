@@ -33,18 +33,6 @@ smalltalk.RecipeTest);
 
 smalltalk.addClass('Recipe', smalltalk.Object, ['name', 'ingredients'], 'GroceryApp');
 smalltalk.addMethod(
-'_initializeNamed_',
-smalltalk.method({
-selector: 'initializeNamed:',
-fn: function (aName) {
-var self=this;
-self['@name']=aName;
-self['@ingredients']=smalltalk.send((smalltalk.Array || Array), "_new", []);
-return self;}
-}),
-smalltalk.Recipe);
-
-smalltalk.addMethod(
 '_name',
 smalltalk.method({
 selector: 'name',
@@ -88,14 +76,70 @@ return self;}
 }),
 smalltalk.Recipe);
 
+smalltalk.addMethod(
+'_dbid',
+smalltalk.method({
+selector: 'dbid',
+fn: function (){
+var self=this;
+return smalltalk.send(smalltalk.send(self, "_db", []), "_id", []);
+return self;}
+}),
+smalltalk.Recipe);
+
+smalltalk.addMethod(
+'_asJSON',
+smalltalk.method({
+selector: 'asJSON',
+fn: function (){
+var self=this;
+return smalltalk.send(smalltalk.send(self, "_asVersionedRecipe", []), "_asJSON", []);
+return self;}
+}),
+smalltalk.Recipe);
+
+smalltalk.addMethod(
+'_asVersionedRecipe',
+smalltalk.method({
+selector: 'asVersionedRecipe',
+fn: function (){
+var self=this;
+return smalltalk.send((smalltalk.VersionedRecipe || VersionedRecipe), "_named_ingredients_revision_", [smalltalk.send(self, "_name", []), smalltalk.send(self, "_ingredients", []), smalltalk.send(smalltalk.send(self, "_db", []), "_revision", [])]);
+return self;}
+}),
+smalltalk.Recipe);
+
+smalltalk.addMethod(
+'_initializeNamed_ingredients_',
+smalltalk.method({
+selector: 'initializeNamed:ingredients:',
+fn: function (aName, anArray){
+var self=this;
+self['@name']=aName;
+self['@ingredients']=anArray;
+return self;}
+}),
+smalltalk.Recipe);
+
 
 smalltalk.addMethod(
 '_named_',
 smalltalk.method({
 selector: 'named:',
-fn: function (aName) {
+fn: function (aName){
 var self=this;
-return smalltalk.send(smalltalk.send(self, "_new", []), "_initializeNamed_", [aName]);
+return smalltalk.send(self, "_named_ingredients_", [aName, smalltalk.send((smalltalk.Array || Array), "_new", [])]);
+return self;}
+}),
+smalltalk.Recipe.klass);
+
+smalltalk.addMethod(
+'_named_ingredients_',
+smalltalk.method({
+selector: 'named:ingredients:',
+fn: function (aName, anArray){
+var self=this;
+return smalltalk.send(smalltalk.send(self, "_new", []), "_initializeNamed_ingredients_", [aName, anArray]);
 return self;}
 }),
 smalltalk.Recipe.klass);
@@ -106,11 +150,9 @@ smalltalk.addMethod(
 '_initialize',
 smalltalk.method({
 selector: 'initialize',
-fn: function () {
+fn: function (){
 var self=this;
-self['@recipe']=smalltalk.send((smalltalk.Recipe || Recipe), "_named_", ["BLTs"]);
-smalltalk.send(self['@recipe'], "_add_", [smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", ["1 Pound of Bacon"])]);
-smalltalk.send(self['@recipe'], "_add_", [smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", [unescape("1/2%20Head%20of%20Lettuce")])]);
+self['@recipe']=smalltalk.send((smalltalk.CouchDoc || CouchDoc), "_on_id_revision_", [smalltalk.send(self, "_recipeFixture", []), "", ""]);
 return self;}
 }),
 smalltalk.RecipeView);
@@ -217,12 +259,20 @@ smalltalk.addMethod(
 '_persistRecipe',
 smalltalk.method({
 selector: 'persistRecipe',
-fn: function () {
+fn: function (){
 var self=this;
-var result=nil;
-var data=nil;
-data=unescape("%7B%20%22name%22%3A%20%22Tacos%22%2C%20%22ingredients%22%3A%20%5B%5D%20%7D");
-result=smalltalk.send((typeof jQuery == 'undefined' ? nil : jQuery), "_ajax_options_", [unescape("http%3A//localhost/couchdb/recipes/"), smalltalk.Dictionary._fromPairs_([smalltalk.send("type", "__minus_gt", ["POST"]),smalltalk.send("contentType", "__minus_gt", [unescape("application/json")]),smalltalk.send("data", "__minus_gt", [unescape("%7B%22name%22%3A%22BLTxs%22%7D")])])]);
+smalltalk.send((typeof jQuery == 'undefined' ? nil : jQuery), "_ajax_options_", [smalltalk.send(unescape("http%3A//localhost/couchdb/recipes/"), "__comma", [smalltalk.send(self['@recipe'], "_id", [])]), smalltalk.Dictionary._fromPairs_([smalltalk.send("type", "__minus_gt", ["PUT"]),smalltalk.send("contentType", "__minus_gt", [unescape("application/json")]),smalltalk.send("data", "__minus_gt", [smalltalk.send(self['@recipe'], "_asJSON", [])])])]);
+return self;}
+}),
+smalltalk.RecipeView);
+
+smalltalk.addMethod(
+'_recipeFixture',
+smalltalk.method({
+selector: 'recipeFixture',
+fn: function (){
+var self=this;
+return smalltalk.send((smalltalk.Recipe || Recipe), "_named_ingredients_", ["BLTs", smalltalk.send((smalltalk.Array || Array), "_with_with_", [smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", ["1 Pound of Bacon"]), smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", [unescape("1/2%20Head%20of%20Lettuce")])])]);
 return self;}
 }),
 smalltalk.RecipeView);
@@ -326,5 +376,81 @@ return smalltalk.send(smalltalk.send(self, "_new", []), "_initializeOn_", [anIng
 return self;}
 }),
 smalltalk.IngredientView.klass);
+
+
+smalltalk.addClass('VersionedRecipe', smalltalk.Recipe, ['revision'], 'GroceryApp');
+smalltalk.addMethod(
+'_initializeNamed_ingredients_revision_',
+smalltalk.method({
+selector: 'initializeNamed:ingredients:revision:',
+fn: function (aName, anArray, aRevision){
+var self=this;
+self['@name']=aName;
+self['@ingredients']=anArray;
+self['@revision']=aRevision;
+return self;}
+}),
+smalltalk.VersionedRecipe);
+
+
+smalltalk.addMethod(
+'_named_ingredients_revision_',
+smalltalk.method({
+selector: 'named:ingredients:revision:',
+fn: function (aName, anArray, aRevision){
+var self=this;
+return smalltalk.send(smalltalk.send(self, "_new", []), "_initializeNamed_ingredients_revision_", [aName, anArray, aRevision]);
+return self;}
+}),
+smalltalk.VersionedRecipe.klass);
+
+
+smalltalk.addClass('CouchDoc', smalltalk.Object, ['model', 'id', 'revision'], 'GroceryApp');
+smalltalk.addMethod(
+'_intitializeOn_id_revision_',
+smalltalk.method({
+selector: 'intitializeOn:id:revision:',
+fn: function (aModel, anId, aRevision){
+var self=this;
+self['@model']=aModel;
+self['@id']=anId;
+self['@revision']=aRevision;
+return self;}
+}),
+smalltalk.CouchDoc);
+
+smalltalk.addMethod(
+'_name',
+smalltalk.method({
+selector: 'name',
+fn: function (){
+var self=this;
+return smalltalk.send(self['@model'], "_name", []);
+return self;}
+}),
+smalltalk.CouchDoc);
+
+smalltalk.addMethod(
+'_doesNotUnderstand_',
+smalltalk.method({
+selector: 'doesNotUnderstand:',
+fn: function (aMessage){
+var self=this;
+return smalltalk.send(self['@model'], "_perform_withArguments_", [smalltalk.send(aMessage, "_selector", []), smalltalk.send(aMessage, "_arguments", [])]);
+return self;}
+}),
+smalltalk.CouchDoc);
+
+
+smalltalk.addMethod(
+'_on_id_revision_',
+smalltalk.method({
+selector: 'on:id:revision:',
+fn: function (aModel, anId, aRevision){
+var self=this;
+return smalltalk.send(smalltalk.send(self, "_new", []), "_intitializeOn_id_revision_", [aModel, anId, aRevision]);
+return self;}
+}),
+smalltalk.CouchDoc.klass);
 
 
