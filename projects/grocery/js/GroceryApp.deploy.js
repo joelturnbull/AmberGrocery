@@ -77,39 +77,6 @@ return self;}
 smalltalk.Recipe);
 
 smalltalk.addMethod(
-'_dbid',
-smalltalk.method({
-selector: 'dbid',
-fn: function (){
-var self=this;
-return smalltalk.send(smalltalk.send(self, "_db", []), "_id", []);
-return self;}
-}),
-smalltalk.Recipe);
-
-smalltalk.addMethod(
-'_asJSON',
-smalltalk.method({
-selector: 'asJSON',
-fn: function (){
-var self=this;
-return smalltalk.send(smalltalk.send(self, "_asVersionedRecipe", []), "_asJSON", []);
-return self;}
-}),
-smalltalk.Recipe);
-
-smalltalk.addMethod(
-'_asVersionedRecipe',
-smalltalk.method({
-selector: 'asVersionedRecipe',
-fn: function (){
-var self=this;
-return smalltalk.send((smalltalk.VersionedRecipe || VersionedRecipe), "_named_ingredients_revision_", [smalltalk.send(self, "_name", []), smalltalk.send(self, "_ingredients", []), smalltalk.send(smalltalk.send(self, "_db", []), "_revision", [])]);
-return self;}
-}),
-smalltalk.Recipe);
-
-smalltalk.addMethod(
 '_initializeNamed_ingredients_',
 smalltalk.method({
 selector: 'initializeNamed:ingredients:',
@@ -152,7 +119,7 @@ smalltalk.method({
 selector: 'initialize',
 fn: function (){
 var self=this;
-self['@recipe']=smalltalk.send((smalltalk.CouchDoc || CouchDoc), "_on_id_revision_", [smalltalk.send(self, "_recipeFixture", []), "", ""]);
+self['@recipe']=smalltalk.send((smalltalk.CouchDoc || CouchDoc), "_on_id_revision_", [smalltalk.send(self, "_recipeFixture", []), "62dbe43584f7ba52dc7b268479007a2c", unescape("2-81bca0718f1357ee6dc8a8691c91bb2d")]);
 return self;}
 }),
 smalltalk.RecipeView);
@@ -261,7 +228,8 @@ smalltalk.method({
 selector: 'persistRecipe',
 fn: function (){
 var self=this;
-smalltalk.send((typeof jQuery == 'undefined' ? nil : jQuery), "_ajax_options_", [smalltalk.send(unescape("http%3A//localhost/couchdb/recipes/"), "__comma", [smalltalk.send(self['@recipe'], "_id", [])]), smalltalk.Dictionary._fromPairs_([smalltalk.send("type", "__minus_gt", ["PUT"]),smalltalk.send("contentType", "__minus_gt", [unescape("application/json")]),smalltalk.send("data", "__minus_gt", [smalltalk.send(self['@recipe'], "_asJSON", [])])])]);
+smalltalk.send((typeof window == 'undefined' ? nil : window), "_alert_", [smalltalk.send(smalltalk.send(self, "_recipe", []), "_asJSON", [])]);
+smalltalk.send((typeof jQuery == 'undefined' ? nil : jQuery), "_ajax_options_", [smalltalk.send(unescape("http%3A//localhost/couchdb/recipes/"), "__comma", [smalltalk.send(smalltalk.send(self, "_recipe", []), "_id", [])]), smalltalk.Dictionary._fromPairs_([smalltalk.send("type", "__minus_gt", ["PUT"]),smalltalk.send("contentType", "__minus_gt", [unescape("application/json")]),smalltalk.send("data", "__minus_gt", [smalltalk.send(smalltalk.send(self, "_recipe", []), "_asJSON", [])])])]);
 return self;}
 }),
 smalltalk.RecipeView);
@@ -378,34 +346,7 @@ return self;}
 smalltalk.IngredientView.klass);
 
 
-smalltalk.addClass('VersionedRecipe', smalltalk.Recipe, ['revision'], 'GroceryApp');
-smalltalk.addMethod(
-'_initializeNamed_ingredients_revision_',
-smalltalk.method({
-selector: 'initializeNamed:ingredients:revision:',
-fn: function (aName, anArray, aRevision){
-var self=this;
-self['@name']=aName;
-self['@ingredients']=anArray;
-self['@revision']=aRevision;
-return self;}
-}),
-smalltalk.VersionedRecipe);
-
-
-smalltalk.addMethod(
-'_named_ingredients_revision_',
-smalltalk.method({
-selector: 'named:ingredients:revision:',
-fn: function (aName, anArray, aRevision){
-var self=this;
-return smalltalk.send(smalltalk.send(self, "_new", []), "_initializeNamed_ingredients_revision_", [aName, anArray, aRevision]);
-return self;}
-}),
-smalltalk.VersionedRecipe.klass);
-
-
-smalltalk.addClass('CouchDoc', smalltalk.Object, ['model', 'id', 'revision'], 'GroceryApp');
+smalltalk.addClass('CouchDoc', smalltalk.Object, ['model', 'revision', 'id'], 'GroceryApp');
 smalltalk.addMethod(
 '_intitializeOn_id_revision_',
 smalltalk.method({
@@ -420,23 +361,45 @@ return self;}
 smalltalk.CouchDoc);
 
 smalltalk.addMethod(
-'_name',
-smalltalk.method({
-selector: 'name',
-fn: function (){
-var self=this;
-return smalltalk.send(self['@model'], "_name", []);
-return self;}
-}),
-smalltalk.CouchDoc);
-
-smalltalk.addMethod(
 '_doesNotUnderstand_',
 smalltalk.method({
 selector: 'doesNotUnderstand:',
 fn: function (aMessage){
 var self=this;
 return smalltalk.send(self['@model'], "_perform_withArguments_", [smalltalk.send(aMessage, "_selector", []), smalltalk.send(aMessage, "_arguments", [])]);
+return self;}
+}),
+smalltalk.CouchDoc);
+
+smalltalk.addMethod(
+'_revision',
+smalltalk.method({
+selector: 'revision',
+fn: function (){
+var self=this;
+return self['@revision'];
+return self;}
+}),
+smalltalk.CouchDoc);
+
+smalltalk.addMethod(
+'_id',
+smalltalk.method({
+selector: 'id',
+fn: function (){
+var self=this;
+return self['@id'];
+return self;}
+}),
+smalltalk.CouchDoc);
+
+smalltalk.addMethod(
+'_asJSONObject',
+smalltalk.method({
+selector: 'asJSONObject',
+fn: function (){
+var self=this;
+return (function($rec){smalltalk.send($rec, "_basicAt_put_", ["_rev", self['@revision']]);return smalltalk.send($rec, "_yourself", []);})(smalltalk.send(self, "_asJSONObject", [], smalltalk.Object));
 return self;}
 }),
 smalltalk.CouchDoc);

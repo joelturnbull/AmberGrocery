@@ -47,24 +47,6 @@ ingredients
 	^ ingredients copy
 !
 
-dbid
-
-	^ self db id
-!
-
-asJSON
-
-	^ self asVersionedRecipe asJSON
-!
-
-asVersionedRecipe
-
-	^ VersionedRecipe
-		named: self name
-		ingredients: self ingredients
-		revision: self db revision
-!
-
 initializeNamed: aName ingredients: anArray
 
 	name := aName.
@@ -93,8 +75,8 @@ initialize
 
 	recipe := CouchDoc
 			on: self recipeFixture
-			id: ''
-			revision: ''
+			id: '62dbe43584f7ba52dc7b268479007a2c'
+			revision: '2-81bca0718f1357ee6dc8a8691c91bb2d'.
 !
 
 renderOn: html
@@ -157,13 +139,13 @@ saveRecipeOnClickOf: button
 !
 
 persistRecipe
-
+window alert: self recipe asJSON.
 	jQuery
-      		ajax: 'http://localhost/couchdb/recipes/', recipe id
+      		ajax: 'http://localhost/couchdb/recipes/', self recipe id
       		options: #{
 				'type' -> 'PUT'.
 				'contentType' -> 'application/json'.
-				'data' -> recipe asJSON
+				'data' -> self recipe asJSON
 		}.
 !
 
@@ -240,28 +222,8 @@ on: anIngredient
 	^ self new initializeOn: anIngredient
 ! !
 
-Recipe subclass: #VersionedRecipe
-	instanceVariableNames: 'revision'
-	category: 'GroceryApp'!
-
-!VersionedRecipe methodsFor: 'not yet classified'!
-
-initializeNamed: aName ingredients: anArray revision: aRevision
-
-	name := aName.
-	ingredients := anArray.
-	revision := aRevision.
-! !
-
-!VersionedRecipe class methodsFor: 'not yet classified'!
-
-named: aName ingredients: anArray revision: aRevision
-
-	^ self new initializeNamed: aName ingredients: anArray revision: aRevision
-! !
-
 Object subclass: #CouchDoc
-	instanceVariableNames: 'model id revision'
+	instanceVariableNames: 'model revision id'
 	category: 'GroceryApp'!
 
 !CouchDoc methodsFor: 'not yet classified'!
@@ -273,15 +235,26 @@ intitializeOn: aModel id: anId revision: aRevision
         revision := aRevision.
 !
 
-name
-	^ model name
-!
-
 doesNotUnderstand: aMessage
 
 	^ model 
 		perform: aMessage selector
 		withArguments: aMessage arguments
+!
+
+revision
+
+	^ revision
+!
+
+id
+
+	^ id
+!
+
+asJSONObject
+
+	^ super asJSONObject basicAt: '_rev' put: revision; yourself.
 ! !
 
 !CouchDoc class methodsFor: 'not yet classified'!
