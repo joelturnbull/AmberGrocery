@@ -165,10 +165,10 @@ selector: unescape('initialize'),
 category: 'not yet classified',
 fn: function (){
 var self=this;
-self['@recipe']=smalltalk.send((smalltalk.CouchDoc || CouchDoc), "_on_id_revision_", [smalltalk.send(self, "_recipeFixture", []), "62dbe43584f7ba52dc7b268479007a2c", unescape("2-81bca0718f1357ee6dc8a8691c91bb2d")]);
+self['@recipe']=smalltalk.send((smalltalk.CouchDoc || CouchDoc), "_on_id_revision_", [smalltalk.send(self, "_recipeFixture", []), "62dbe43584f7ba52dc7b268479007a2c", unescape("5-66f4d34a9a1390c7ffba0e6dff5d346f")]);
 return self;},
 args: [],
-source: unescape('initialize%0A%0A%09recipe%20%3A%3D%20CouchDoc%0A%09%09%09on%3A%20self%20recipeFixture%0A%09%09%09id%3A%20%2762dbe43584f7ba52dc7b268479007a2c%27%0A%09%09%09revision%3A%20%272-81bca0718f1357ee6dc8a8691c91bb2d%27.%20'),
+source: unescape('initialize%0A%0A%09recipe%20%3A%3D%20CouchDoc%0A%09%09%09on%3A%20self%20recipeFixture%0A%09%09%09id%3A%20%2762dbe43584f7ba52dc7b268479007a2c%27%0A%09%09%09revision%3A%20%275-66f4d34a9a1390c7ffba0e6dff5d346f%27.%20'),
 messageSends: ["on:id:revision:", "recipeFixture"],
 referencedClasses: ["CouchDoc"]
 }),
@@ -319,12 +319,11 @@ selector: unescape('persistRecipe'),
 category: 'not yet classified',
 fn: function (){
 var self=this;
-smalltalk.send((typeof window == 'undefined' ? nil : window), "_alert_", [smalltalk.send(smalltalk.send(self, "_recipe", []), "_asJSON", [])]);
 smalltalk.send((typeof jQuery == 'undefined' ? nil : jQuery), "_ajax_options_", [smalltalk.send(unescape("http%3A//localhost/couchdb/recipes/"), "__comma", [smalltalk.send(smalltalk.send(self, "_recipe", []), "_id", [])]), smalltalk.Dictionary._fromPairs_([smalltalk.send("type", "__minus_gt", ["PUT"]),smalltalk.send("contentType", "__minus_gt", [unescape("application/json")]),smalltalk.send("data", "__minus_gt", [smalltalk.send(smalltalk.send(self, "_recipe", []), "_asJSON", [])])])]);
 return self;},
 args: [],
-source: unescape('persistRecipe%0Awindow%20alert%3A%20self%20recipe%20asJSON.%0A%09jQuery%0A%20%20%20%20%20%20%09%09ajax%3A%20%27http%3A//localhost/couchdb/recipes/%27%2C%20self%20recipe%20id%0A%20%20%20%20%20%20%09%09options%3A%20%23%7B%0A%09%09%09%09%27type%27%20-%3E%20%27PUT%27.%0A%09%09%09%09%27contentType%27%20-%3E%20%27application/json%27.%0A%09%09%09%09%27data%27%20-%3E%20self%20recipe%20asJSON%0A%09%09%7D.'),
-messageSends: ["alert:", "asJSON", "recipe", "ajax:options:", unescape("%2C"), "id", unescape("-%3E")],
+source: unescape('persistRecipe%0A%0A%09jQuery%0A%20%20%20%20%20%20%09%09ajax%3A%20%27http%3A//localhost/couchdb/recipes/%27%2C%20self%20recipe%20id%0A%20%20%20%20%20%20%09%09options%3A%20%23%7B%0A%09%09%09%09%27type%27%20-%3E%20%27PUT%27.%0A%09%09%09%09%27contentType%27%20-%3E%20%27application/json%27.%0A%09%09%09%09%27data%27%20-%3E%20self%20recipe%20asJSON%0A%09%09%7D.'),
+messageSends: ["ajax:options:", unescape("%2C"), "id", "recipe", unescape("-%3E"), "asJSON"],
 referencedClasses: []
 }),
 smalltalk.RecipeView);
@@ -560,10 +559,10 @@ selector: unescape('asJSONObject'),
 category: 'not yet classified',
 fn: function (){
 var self=this;
-return (function($rec){smalltalk.send($rec, "_basicAt_put_", ["_rev", self['@revision']]);return smalltalk.send($rec, "_yourself", []);})(smalltalk.send(self, "_asJSONObject", [], smalltalk.Object));
+return (function($rec){smalltalk.send($rec, "_basicAt_put_", ["_rev", self['@revision']]);return smalltalk.send($rec, "_yourself", []);})(smalltalk.send(self['@model'], "_asJSONObject", []));
 return self;},
 args: [],
-source: unescape('asJSONObject%0A%0A%09%5E%20super%20asJSONObject%20basicAt%3A%20%27_rev%27%20put%3A%20revision%3B%20yourself.%0A'),
+source: unescape('asJSONObject%0A%0A%09%5E%20model%20asJSONObject%20basicAt%3A%20%27_rev%27%20put%3A%20revision%3B%20yourself.%0A'),
 messageSends: ["basicAt:put:", "yourself", "asJSONObject"],
 referencedClasses: []
 }),

@@ -76,7 +76,7 @@ initialize
 	recipe := CouchDoc
 			on: self recipeFixture
 			id: '62dbe43584f7ba52dc7b268479007a2c'
-			revision: '2-81bca0718f1357ee6dc8a8691c91bb2d'.
+			revision: '5-66f4d34a9a1390c7ffba0e6dff5d346f'.
 !
 
 renderOn: html
@@ -139,7 +139,7 @@ saveRecipeOnClickOf: button
 !
 
 persistRecipe
-window alert: self recipe asJSON.
+
 	jQuery
       		ajax: 'http://localhost/couchdb/recipes/', self recipe id
       		options: #{
@@ -254,7 +254,7 @@ id
 
 asJSONObject
 
-	^ super asJSONObject basicAt: '_rev' put: revision; yourself.
+	^ model asJSONObject basicAt: '_rev' put: revision; yourself.
 ! !
 
 !CouchDoc class methodsFor: 'not yet classified'!

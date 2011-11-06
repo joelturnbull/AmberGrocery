@@ -119,7 +119,7 @@ smalltalk.method({
 selector: 'initialize',
 fn: function (){
 var self=this;
-self['@recipe']=smalltalk.send((smalltalk.CouchDoc || CouchDoc), "_on_id_revision_", [smalltalk.send(self, "_recipeFixture", []), "62dbe43584f7ba52dc7b268479007a2c", unescape("2-81bca0718f1357ee6dc8a8691c91bb2d")]);
+self['@recipe']=smalltalk.send((smalltalk.CouchDoc || CouchDoc), "_on_id_revision_", [smalltalk.send(self, "_recipeFixture", []), "62dbe43584f7ba52dc7b268479007a2c", unescape("5-66f4d34a9a1390c7ffba0e6dff5d346f")]);
 return self;}
 }),
 smalltalk.RecipeView);
@@ -228,7 +228,6 @@ smalltalk.method({
 selector: 'persistRecipe',
 fn: function (){
 var self=this;
-smalltalk.send((typeof window == 'undefined' ? nil : window), "_alert_", [smalltalk.send(smalltalk.send(self, "_recipe", []), "_asJSON", [])]);
 smalltalk.send((typeof jQuery == 'undefined' ? nil : jQuery), "_ajax_options_", [smalltalk.send(unescape("http%3A//localhost/couchdb/recipes/"), "__comma", [smalltalk.send(smalltalk.send(self, "_recipe", []), "_id", [])]), smalltalk.Dictionary._fromPairs_([smalltalk.send("type", "__minus_gt", ["PUT"]),smalltalk.send("contentType", "__minus_gt", [unescape("application/json")]),smalltalk.send("data", "__minus_gt", [smalltalk.send(smalltalk.send(self, "_recipe", []), "_asJSON", [])])])]);
 return self;}
 }),
@@ -399,7 +398,7 @@ smalltalk.method({
 selector: 'asJSONObject',
 fn: function (){
 var self=this;
-return (function($rec){smalltalk.send($rec, "_basicAt_put_", ["_rev", self['@revision']]);return smalltalk.send($rec, "_yourself", []);})(smalltalk.send(self, "_asJSONObject", [], smalltalk.Object));
+return (function($rec){smalltalk.send($rec, "_basicAt_put_", ["_rev", self['@revision']]);return smalltalk.send($rec, "_yourself", []);})(smalltalk.send(self['@model'], "_asJSONObject", []));
 return self;}
 }),
 smalltalk.CouchDoc);
