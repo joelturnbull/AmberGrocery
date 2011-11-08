@@ -498,9 +498,20 @@ smalltalk.CouchDoc.klass);
 
 smalltalk.addClass('RecipeSearch', smalltalk.Object, ['revision'], 'GroceryApp');
 smalltalk.addMethod(
-'_success_',
+'_id_',
 smalltalk.method({
-selector: 'success:',
+selector: 'id:',
+fn: function (anId){
+var self=this;
+smalltalk.send((typeof jQuery == 'undefined' ? nil : jQuery), "_ajax_options_", [smalltalk.send(unescape("http%3A//localhost/couchdb/recipes/"), "__comma", [anId]), smalltalk.Dictionary._fromPairs_([smalltalk.send("type", "__minus_gt", ["GET"]),smalltalk.send("dataType", "__minus_gt", ["jsonp"]),smalltalk.send("success", "__minus_gt", [(function(jsonp){return smalltalk.send(self, "_launchViewOn_", [jsonp]);})]),smalltalk.send("error", "__minus_gt", [(function(){return smalltalk.send((typeof window == 'undefined' ? nil : window), "_alert_", ["error"]);})])])]);
+return self;}
+}),
+smalltalk.RecipeSearch);
+
+smalltalk.addMethod(
+'_launchViewOn_',
+smalltalk.method({
+selector: 'launchViewOn:',
 fn: function (aJSONObject){
 var self=this;
 var recipe=nil;
@@ -508,18 +519,6 @@ var recipeView=nil;
 recipe=smalltalk.send((smalltalk.CouchDoc || CouchDoc), "_on_id_revision_", [smalltalk.send((smalltalk.Recipe || Recipe), "_fromJSON_", [aJSONObject]), smalltalk.send(aJSONObject, "_at_", ["_id"]), smalltalk.send(aJSONObject, "_at_", ["_rev"])]);
 recipeView=smalltalk.send((smalltalk.RecipeView || RecipeView), "_on_", [recipe]);
 smalltalk.send(recipeView, "_appendToJQuery_", [smalltalk.send(unescape("%23recipe"), "_asJQuery", [])]);
-return self;}
-}),
-smalltalk.RecipeSearch);
-
-smalltalk.addMethod(
-'_id_',
-smalltalk.method({
-selector: 'id:',
-fn: function (anId){
-var self=this;
-var result=nil;
-result=smalltalk.send((typeof jQuery == 'undefined' ? nil : jQuery), "_ajax_options_", [smalltalk.send(unescape("http%3A//localhost/couchdb/recipes/"), "__comma", [anId]), smalltalk.Dictionary._fromPairs_([smalltalk.send("type", "__minus_gt", ["GET"]),smalltalk.send("dataType", "__minus_gt", ["jsonp"]),smalltalk.send("success", "__minus_gt", [(function(jsonp){return smalltalk.send(self, "_success_", [jsonp]);})]),smalltalk.send("error", "__minus_gt", [(function(){return smalltalk.send((typeof window == 'undefined' ? nil : window), "_alert_", ["error"]);})])])]);
 return self;}
 }),
 smalltalk.RecipeSearch);

@@ -321,7 +321,19 @@ Object subclass: #RecipeSearch
 
 !RecipeSearch methodsFor: 'not yet classified'!
 
-success: aJSONObject
+id: anId
+
+	jQuery 
+		ajax: 'http://localhost/couchdb/recipes/', anId
+		options: #{
+				'type' -> 'GET'.
+				'dataType' -> 'jsonp'.
+				'success' -> [ :jsonp | self launchViewOn: jsonp ].
+				'error' -> [window alert: 'error']
+		}.
+!
+
+launchViewOn: aJSONObject
 | recipe recipeView |
 
 	recipe := CouchDoc
@@ -330,17 +342,5 @@ success: aJSONObject
 			revision: ( aJSONObject at: '_rev' ).
 	recipeView := RecipeView on: recipe.
 	recipeView appendToJQuery: ( '#recipe' asJQuery ).
-!
-
-id: anId
-| result |
-	result := jQuery 
-			ajax: 'http://localhost/couchdb/recipes/', anId
-			options: #{
-				'type' -> 'GET'.
-				'dataType' -> 'jsonp'.
-				'success' -> [ :jsonp | self success: jsonp ].
-				'error' -> [window alert: 'error']
-			}.
 ! !
 

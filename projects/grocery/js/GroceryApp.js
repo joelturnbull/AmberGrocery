@@ -703,9 +703,25 @@ smalltalk.CouchDoc.klass);
 
 smalltalk.addClass('RecipeSearch', smalltalk.Object, ['revision'], 'GroceryApp');
 smalltalk.addMethod(
-unescape('_success_'),
+unescape('_id_'),
 smalltalk.method({
-selector: unescape('success%3A'),
+selector: unescape('id%3A'),
+category: 'not yet classified',
+fn: function (anId){
+var self=this;
+smalltalk.send((typeof jQuery == 'undefined' ? nil : jQuery), "_ajax_options_", [smalltalk.send(unescape("http%3A//localhost/couchdb/recipes/"), "__comma", [anId]), smalltalk.Dictionary._fromPairs_([smalltalk.send("type", "__minus_gt", ["GET"]),smalltalk.send("dataType", "__minus_gt", ["jsonp"]),smalltalk.send("success", "__minus_gt", [(function(jsonp){return smalltalk.send(self, "_launchViewOn_", [jsonp]);})]),smalltalk.send("error", "__minus_gt", [(function(){return smalltalk.send((typeof window == 'undefined' ? nil : window), "_alert_", ["error"]);})])])]);
+return self;},
+args: ["anId"],
+source: unescape('id%3A%20anId%0A%0A%09jQuery%20%0A%09%09ajax%3A%20%27http%3A//localhost/couchdb/recipes/%27%2C%20anId%0A%09%09options%3A%20%23%7B%0A%09%09%09%09%27type%27%20-%3E%20%27GET%27.%0A%09%09%09%09%27dataType%27%20-%3E%20%27jsonp%27.%0A%09%09%09%09%27success%27%20-%3E%20%5B%20%3Ajsonp%20%7C%20self%20launchViewOn%3A%20jsonp%20%5D.%0A%09%09%09%09%27error%27%20-%3E%20%5Bwindow%20alert%3A%20%27error%27%5D%0A%09%09%7D.'),
+messageSends: ["ajax:options:", unescape("%2C"), unescape("-%3E"), "launchViewOn:", "alert:"],
+referencedClasses: []
+}),
+smalltalk.RecipeSearch);
+
+smalltalk.addMethod(
+unescape('_launchViewOn_'),
+smalltalk.method({
+selector: unescape('launchViewOn%3A'),
 category: 'not yet classified',
 fn: function (aJSONObject){
 var self=this;
@@ -716,26 +732,9 @@ recipeView=smalltalk.send((smalltalk.RecipeView || RecipeView), "_on_", [recipe]
 smalltalk.send(recipeView, "_appendToJQuery_", [smalltalk.send(unescape("%23recipe"), "_asJQuery", [])]);
 return self;},
 args: ["aJSONObject"],
-source: unescape('success%3A%20aJSONObject%0A%7C%20recipe%20recipeView%20%7C%0A%0A%09recipe%20%3A%3D%20CouchDoc%0A%09%09%09on%3A%20%28%20Recipe%20fromJSON%3A%20aJSONObject%20%29%0A%09%09%09id%3A%20%28%20aJSONObject%20at%3A%20%27_id%27%20%29%0A%09%09%09revision%3A%20%28%20aJSONObject%20at%3A%20%27_rev%27%20%29.%0A%09recipeView%20%3A%3D%20RecipeView%20on%3A%20recipe.%0A%09recipeView%20appendToJQuery%3A%20%28%20%27%23recipe%27%20asJQuery%20%29.%20%0A'),
+source: unescape('launchViewOn%3A%20aJSONObject%0A%7C%20recipe%20recipeView%20%7C%0A%0A%09recipe%20%3A%3D%20CouchDoc%0A%09%09%09on%3A%20%28%20Recipe%20fromJSON%3A%20aJSONObject%20%29%0A%09%09%09id%3A%20%28%20aJSONObject%20at%3A%20%27_id%27%20%29%0A%09%09%09revision%3A%20%28%20aJSONObject%20at%3A%20%27_rev%27%20%29.%0A%09recipeView%20%3A%3D%20RecipeView%20on%3A%20recipe.%0A%09recipeView%20appendToJQuery%3A%20%28%20%27%23recipe%27%20asJQuery%20%29.%20%0A'),
 messageSends: ["on:id:revision:", "fromJSON:", "at:", "on:", "appendToJQuery:", "asJQuery"],
 referencedClasses: ["CouchDoc", "Recipe", "RecipeView"]
-}),
-smalltalk.RecipeSearch);
-
-smalltalk.addMethod(
-unescape('_id_'),
-smalltalk.method({
-selector: unescape('id%3A'),
-category: 'not yet classified',
-fn: function (anId){
-var self=this;
-var result=nil;
-result=smalltalk.send((typeof jQuery == 'undefined' ? nil : jQuery), "_ajax_options_", [smalltalk.send(unescape("http%3A//localhost/couchdb/recipes/"), "__comma", [anId]), smalltalk.Dictionary._fromPairs_([smalltalk.send("type", "__minus_gt", ["GET"]),smalltalk.send("dataType", "__minus_gt", ["jsonp"]),smalltalk.send("success", "__minus_gt", [(function(jsonp){return smalltalk.send(self, "_success_", [jsonp]);})]),smalltalk.send("error", "__minus_gt", [(function(){return smalltalk.send((typeof window == 'undefined' ? nil : window), "_alert_", ["error"]);})])])]);
-return self;},
-args: ["anId"],
-source: unescape('id%3A%20anId%0A%7C%20result%20%7C%0A%09result%20%3A%3D%20jQuery%20%0A%09%09%09ajax%3A%20%27http%3A//localhost/couchdb/recipes/%27%2C%20anId%0A%09%09%09options%3A%20%23%7B%0A%09%09%09%09%27type%27%20-%3E%20%27GET%27.%0A%09%09%09%09%27dataType%27%20-%3E%20%27jsonp%27.%0A%09%09%09%09%27success%27%20-%3E%20%5B%20%3Ajsonp%20%7C%20self%20success%3A%20jsonp%20%5D.%0A%09%09%09%09%27error%27%20-%3E%20%5Bwindow%20alert%3A%20%27error%27%5D%0A%09%09%09%7D.'),
-messageSends: ["ajax:options:", unescape("%2C"), unescape("-%3E"), "success:", "alert:"],
-referencedClasses: []
 }),
 smalltalk.RecipeSearch);
 
