@@ -135,7 +135,6 @@ var self=this;
 smalltalk.send(self, "_renderNameOn_", [html]);
 smalltalk.send(self, "_renderIngredientsOn_", [html]);
 smalltalk.send(self, "_renderIngredientInputOn_", [html]);
-smalltalk.send(self, "_renderSaveButtonOn_", [html]);
 return self;}
 }),
 smalltalk.RecipeView);
@@ -159,9 +158,9 @@ fn: function (html){
 var self=this;
 var input=nil;
 var button=nil;
-input=smalltalk.send(self, "_ingredientInputOn_", [html]);
-button=smalltalk.send(self, "_addIngredientButtonOn_", [html]);
-smalltalk.send(smalltalk.send(button, "_asJQuery", []), "_click_", [(function(){smalltalk.send(smalltalk.send(self, "_recipe", []), "_add_", [smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", [smalltalk.send(smalltalk.send(input, "_asJQuery", []), "_val", [])])]);return smalltalk.send(self, "_refresh", []);})]);
+input=smalltalk.send(html, "_input", []);
+button=smalltalk.send(smalltalk.send(html, "_button", []), "_with_", ["Add Ingredient"]);
+smalltalk.send(smalltalk.send(button, "_asJQuery", []), "_click_", [(function(){smalltalk.send(smalltalk.send(self, "_recipe", []), "_add_", [smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", [smalltalk.send(smalltalk.send(input, "_asJQuery", []), "_val", [])])]);smalltalk.send(smalltalk.send(self, "_recipe", []), "_save", []);return smalltalk.send(self, "_refresh", []);})]);
 return self;}
 }),
 smalltalk.RecipeView);
@@ -172,32 +171,10 @@ smalltalk.method({
 selector: 'refresh',
 fn: function (){
 var self=this;
-smalltalk.send(smalltalk.send(self, "_selector", []), "_empty", []);
-smalltalk.send(self, "_appendToJQuery_", [smalltalk.send(self, "_selector", [])]);
-return self;}
-}),
-smalltalk.RecipeView);
-
-smalltalk.addMethod(
-'_selector',
-smalltalk.method({
-selector: 'selector',
-fn: function () {
-var self=this;
-return smalltalk.send(unescape("%23recipe"), "_asJQuery", []);
-return self;}
-}),
-smalltalk.RecipeView);
-
-smalltalk.addMethod(
-'_renderSaveButtonOn_',
-smalltalk.method({
-selector: 'renderSaveButtonOn:',
-fn: function (html){
-var self=this;
-var button=nil;
-smalltalk.send(smalltalk.send(html, "_div", []), "_with_", [(function(){return button=smalltalk.send(self, "_saveButtonOn_", [html]);})]);
-smalltalk.send(smalltalk.send(button, "_asJQuery", []), "_click_", [(function(){return smalltalk.send(smalltalk.send(self, "_recipe", []), "_save", []);})]);
+var selector=nil;
+selector=smalltalk.send(unescape("%23recipe"), "_asJQuery", []);
+smalltalk.send(selector, "_empty", []);
+smalltalk.send(self, "_appendToJQuery_", [selector]);
 return self;}
 }),
 smalltalk.RecipeView);
@@ -236,17 +213,6 @@ return self;}
 smalltalk.RecipeView);
 
 smalltalk.addMethod(
-'_saveButtonOn_',
-smalltalk.method({
-selector: 'saveButtonOn:',
-fn: function (html){
-var self=this;
-return (function($rec){smalltalk.send($rec, "_id_", ["saveRecipe"]);return smalltalk.send($rec, "_with_", ["Save"]);})(smalltalk.send(html, "_button", []));
-return self;}
-}),
-smalltalk.RecipeView);
-
-smalltalk.addMethod(
 '_ingredientInputOn_',
 smalltalk.method({
 selector: 'ingredientInputOn:',
@@ -263,7 +229,7 @@ smalltalk.method({
 selector: 'addIngredientButtonOn:',
 fn: function (html){
 var self=this;
-return (function($rec){smalltalk.send($rec, "_id_", ["addIngredient"]);return smalltalk.send($rec, "_with_", ["Add Ingredient"]);})(smalltalk.send(html, "_button", []));
+return smalltalk.send(smalltalk.send(html, "_button", []), "_with_", ["Add Ingredient"]);
 return self;}
 }),
 smalltalk.RecipeView);

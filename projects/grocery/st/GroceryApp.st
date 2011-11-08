@@ -86,14 +86,10 @@ recipe
 !RecipeView methodsFor: 'action'!
 
 refresh
-
-	self selector empty.
-	self appendToJQuery: self selector.
-!
-
-selector
-
-	^ '#recipe' asJQuery
+	| selector |
+	selector := '#recipe' asJQuery.
+	selector empty.
+	self appendToJQuery: selector.
 ! !
 
 !RecipeView methodsFor: 'init'!
@@ -110,26 +106,19 @@ renderOn: html
 	self renderNameOn: html.
 	self renderIngredientsOn: html.
 	self renderIngredientInputOn: html.
-	self renderSaveButtonOn: html.
 !
 
 renderIngredientInputOn: html
 | input button |
 
-	input := self ingredientInputOn: html. 
-        button := self addIngredientButtonOn: html.
+	input := html input.
+        button := html button with: 'Add Ingredient'.
 	
 	button asJQuery click: [ 
-          	self recipe add: ( Ingredient named: input asJQuery val ). 
+          	self recipe add: ( Ingredient named: input asJQuery val ).
+          	self recipe save.
           	self refresh.
         ]
-!
-
-renderSaveButtonOn: html
-| button |
-
-	html div with: [ button := self saveButtonOn: html ].
-	button asJQuery click: [ self recipe save ].
 !
 
 renderNameOn: html
@@ -142,13 +131,6 @@ renderIngredientsOn: html
 	recipe ingredients do: [ :anIngredient | ( IngredientView on: anIngredient ) renderOn: html ].
 !
 
-saveButtonOn: html
-
-	^ html button
-    		id: 'saveRecipe';
-    		with: 'Save'
-!
-
 ingredientInputOn: html
 
 	^ html input id: 'ingredientInput'.
@@ -156,9 +138,7 @@ ingredientInputOn: html
 
 addIngredientButtonOn: html
 
-	^ html button 
-        	id: 'addIngredient';
-		with: 'Add Ingredient'.
+	^ html button with: 'Add Ingredient'.
 ! !
 
 !RecipeView class methodsFor: 'not yet classified'!
