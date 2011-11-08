@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Counter Demo</title>
+    <script src="../../js/amber.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    loadAmber({
+      files: [],
+      prefix: 'projects/grocery/js',
+      ready: function() {
+        $(function() {
+            smalltalk.Counter._new()._initialize()._appendToJQuery_(jQuery('#counter1'));
+            smalltalk.Counter._new()._initialize()._appendToJQuery_(jQuery('#counter2'));
+            smalltalk.Browser._openOn_(smalltalk.Counter);
+        });
+    }}); 
+    </script>
+  </head>
+  <body>
+    <div id="counter1"></div>
+    <div id="counter2"></div>
+  </body>
+</html>

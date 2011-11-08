@@ -1,0 +1,27 @@
+<html>
+<head>
+<title>Smackbone</title>
+<script src="../../js/amber.js" type="text/javascript"></script>
+</head>
+<body>
+
+  <div id="todo"></div>
+
+<script type="text/javascript">
+	loadAmber({
+		files: ['Smackbone.js', 'Smackbone-Tests.js', 'Smackbone-Examples.js'],
+		prefix: 'examples/smackbone/js',
+		ready: function() {
+      smalltalk.Browser._openOn_(smalltalk.SmackboneWelcome);
+      SmackboneHistory = smalltalk.SmackboneHistorian._new();
+      todoView = smalltalk.SmackboneTodo._new();
+      $('#todo').append(todoView._el());
+      SmackboneHistory._routeView_to_(todoView, '');
+      window.onhashchange = function() { SmackboneHistory._handleHashChanged() };
+      SmackboneHistory._start();
+      if($('#todo').text() == '') { window.location.hash = '' }
+		}});
+</script>
+
+</body>
+</html>

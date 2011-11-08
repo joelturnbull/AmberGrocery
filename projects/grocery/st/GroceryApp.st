@@ -76,55 +76,27 @@ Widget subclass: #RecipeView
 	instanceVariableNames: 'recipe'
 	category: 'GroceryApp'!
 
-!RecipeView methodsFor: 'action'!
-
-refresh
-
-	self selector html: ''. 
-	self appendToJQuery: self selector.
-!
-
-addToRecipeValueOf: input onClickOf: button
-
-	button asJQuery click: [ 
-          	self recipe add: ( Ingredient named: input asJQuery val ). 
-          	self refreshAt: '#recipe' asJQuery.
-        ]
-!
-
-saveRecipeOnClickOf: button
-
-	button asJQuery click: [ self persistRecipe ].
-!
-
-persistRecipe
-
-	jQuery
-      		ajax: 'http://localhost/couchdb/recipes/', self recipe id
-      		options: #{
-				'type' -> 'PUT'.
-				'contentType' -> 'application/json'.
-				'data' -> self recipe asJSON
-		}.
-!
-
-refreshAt: aSelector
-
-	aSelector html: ''. 
-	self appendToJQuery: aSelector.
-! !
-
-!RecipeView methodsFor: 'not yet classified'!
+!RecipeView methodsFor: 'accessing'!
 
 recipe
 
 	^ recipe
+! !
+
+!RecipeView methodsFor: 'action'!
+
+refresh
+
+	self selector empty.
+	self appendToJQuery: self selector.
 !
 
 selector
 
 	^ '#recipe' asJQuery
-!
+! !
+
+!RecipeView methodsFor: 'init'!
 
 initializeOn: aRecipe
 
@@ -134,6 +106,7 @@ initializeOn: aRecipe
 !RecipeView methodsFor: 'rendering'!
 
 renderOn: html
+
 	self renderNameOn: html.
 	self renderIngredientsOn: html.
 	self renderIngredientInputOn: html.
@@ -143,18 +116,20 @@ renderOn: html
 renderIngredientInputOn: html
 | input button |
 
-	input := html input
-		id: 'ingredientInput'.
-        button := html button 
-        	id: 'addIngredient';
-		with: 'Add Ingredient'.
-
-	self addToRecipeValueOf: input onClickOf: button.
+	input := self ingredientInputOn: html. 
+        button := self addIngredientButtonOn: html.
+	
+	button asJQuery click: [ 
+          	self recipe add: ( Ingredient named: input asJQuery val ). 
+          	self refresh.
+        ]
 !
 
 renderSaveButtonOn: html
+| button |
 
-	html div with: [ self renderSaveButtonOn: html ].
+	html div with: [ button := self saveButtonOn: html ].
+	button asJQuery click: [ self recipe save ].
 !
 
 renderNameOn: html
@@ -164,8 +139,26 @@ renderNameOn: html
 
 renderIngredientsOn: html
 
-	recipe ingredients do: [ :anIngredient |
-  		( IngredientView on: anIngredient ) renderOn: html ].
+	recipe ingredients do: [ :anIngredient | ( IngredientView on: anIngredient ) renderOn: html ].
+!
+
+saveButtonOn: html
+
+	^ html button
+    		id: 'saveRecipe';
+    		with: 'Save'
+!
+
+ingredientInputOn: html
+
+	^ html input id: 'ingredientInput'.
+!
+
+addIngredientButtonOn: html
+
+	^ html button 
+        	id: 'addIngredient';
+		with: 'Add Ingredient'.
 ! !
 
 !RecipeView class methodsFor: 'not yet classified'!
@@ -248,21 +241,7 @@ Object subclass: #CouchDoc
 	instanceVariableNames: 'model revision id'
 	category: 'GroceryApp'!
 
-!CouchDoc methodsFor: 'not yet classified'!
-
-intitializeOn: aModel id: anId revision: aRevision
-
-	model := aModel.
-	id := anId.
-        revision := aRevision.
-!
-
-doesNotUnderstand: aMessage
-
-	^ model 
-		perform: aMessage selector
-		withArguments: aMessage arguments
-!
+!CouchDoc methodsFor: 'accessing'!
 
 revision
 
@@ -272,6 +251,56 @@ revision
 id
 
 	^ id
+! !
+
+!CouchDoc methodsFor: 'action'!
+
+save
+
+	jQuery 
+	  ajax: 'http://localhost/couchdb/recipes/', self id
+	  options: #{
+				'type' -> 'PUT'.
+				'contentType' -> 'application/json'.
+				'data' -> self asJSON.
+				'success' -> [ :rslt | self update ]
+	 	        }.
+!
+
+update
+
+	jQuery 
+	  ajax: 'http://localhost/couchdb/recipes/', self id
+	  options: #{
+				'type' -> 'GET'.
+				'dataType' -> 'jsonp'.
+				'success' -> [ :jsonp | self updateFromJSON: jsonp ].
+				'error' -> [window alert: 'error']
+			}.
+!
+
+updateFromJSON: aJSONObject
+	
+	id := ( aJSONObject at: '_id' ).
+	revision := ( aJSONObject at: '_rev' ).
+! !
+
+!CouchDoc methodsFor: 'init'!
+
+intitializeOn: aModel id: anId revision: aRevision
+
+	model := aModel.
+	id := anId.
+        revision := aRevision.
+! !
+
+!CouchDoc methodsFor: 'object'!
+
+doesNotUnderstand: aMessage
+
+	^ model 
+		perform: aMessage selector
+		withArguments: aMessage arguments
 !
 
 asJSONObject
@@ -298,7 +327,7 @@ success: aJSONObject
 	recipe := CouchDoc
 			on: ( Recipe fromJSON: aJSONObject )
 			id: ( aJSONObject at: '_id' )
-			revision: ( aJSONObject at: '_rev' ). 
+			revision: ( aJSONObject at: '_rev' ).
 	recipeView := RecipeView on: recipe.
 	recipeView appendToJQuery: ( '#recipe' asJQuery ).
 !
