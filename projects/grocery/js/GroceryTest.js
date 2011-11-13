@@ -1,5 +1,24 @@
 smalltalk.addPackage('GroceryTest', []);
-smalltalk.addClass('RecipeTest', smalltalk.TestCase, [], 'GroceryTest');
+smalltalk.addClass('GroceryTest', smalltalk.TestCase, ['testObjects'], 'GroceryTest');
+smalltalk.addMethod(
+unescape('_setUp'),
+smalltalk.method({
+selector: unescape('setUp'),
+category: 'not yet classified',
+fn: function (){
+var self=this;
+self['@testObjects']=smalltalk.send((smalltalk.GroceryTestObjects || GroceryTestObjects), "_new", []);
+return self;},
+args: [],
+source: unescape('setUp%0A%0A%09testObjects%20%3A%3D%20GroceryTestObjects%20new.'),
+messageSends: ["new"],
+referencedClasses: ["GroceryTestObjects"]
+}),
+smalltalk.GroceryTest);
+
+
+
+smalltalk.addClass('RecipeTest', smalltalk.GroceryTest, [], 'GroceryTest');
 smalltalk.addMethod(
 unescape('_testRecipeAddIngredient'),
 smalltalk.method({
@@ -41,7 +60,7 @@ smalltalk.RecipeTest);
 
 
 
-smalltalk.addClass('IngredientTest', smalltalk.TestCase, [], 'GroceryTest');
+smalltalk.addClass('IngredientTest', smalltalk.GroceryTest, [], 'GroceryTest');
 smalltalk.addMethod(
 unescape('_testIngredient'),
 smalltalk.method({
@@ -62,7 +81,7 @@ smalltalk.IngredientTest);
 
 
 
-smalltalk.addClass('RecipeViewTest', smalltalk.TestCase, [], 'GroceryTest');
+smalltalk.addClass('RecipeViewTest', smalltalk.GroceryTest, [], 'GroceryTest');
 smalltalk.addMethod(
 unescape('_testDisplaysName'),
 smalltalk.method({
@@ -86,7 +105,7 @@ smalltalk.RecipeViewTest);
 
 
 
-smalltalk.addClass('TextViewTest', smalltalk.TestCase, [], 'GroceryTest');
+smalltalk.addClass('TextViewTest', smalltalk.GroceryTest, [], 'GroceryTest');
 smalltalk.addMethod(
 unescape('_testDisplaysText'),
 smalltalk.method({
@@ -110,10 +129,10 @@ smalltalk.TextViewTest);
 
 
 
-smalltalk.addClass('IngredientViewTest', smalltalk.TestCase, [], 'GroceryTest');
+smalltalk.addClass('IngredientViewTest', smalltalk.GroceryTest, [], 'GroceryTest');
 
 
-smalltalk.addClass('IngredientsViewTest', smalltalk.TestCase, [], 'GroceryTest');
+smalltalk.addClass('IngredientsViewTest', smalltalk.GroceryTest, [], 'GroceryTest');
 smalltalk.addMethod(
 unescape('_testDisplaysText'),
 smalltalk.method({
@@ -134,6 +153,25 @@ messageSends: ["with:with:with:", "named:", "on:", "render", "do:", "assert:", "
 referencedClasses: ["Array", "Ingredient", "IngredientsView"]
 }),
 smalltalk.IngredientsViewTest);
+
+
+
+smalltalk.addClass('GroceryTestObjects', smalltalk.Object, ['bltIngredients'], 'GroceryTest');
+smalltalk.addMethod(
+unescape('_bltIngredients'),
+smalltalk.method({
+selector: unescape('bltIngredients'),
+category: 'not yet classified',
+fn: function (){
+var self=this;
+return (($receiver = self['@bltIngredients']) == nil || $receiver == undefined) ? (function(){return self['@bltIngredients']="";})() : $receiver;
+return self;},
+args: [],
+source: unescape('bltIngredients%0A%0A%09%5E%20bltIngredients%20ifNil%3A%20%5B%20bltIngredients%20%3A%3D%20%27%27%20%5D'),
+messageSends: ["ifNil:"],
+referencedClasses: []
+}),
+smalltalk.GroceryTestObjects);
 
 
 

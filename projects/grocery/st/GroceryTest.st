@@ -1,5 +1,16 @@
 Smalltalk current createPackage: 'GroceryTest' properties: #{'methods'->[object Object]. 'inheritedMethods'->[object Object]. 'klass'->Array. '_size'->a BlockClosure. '_at_put_'->a BlockClosure}!
-TestCase subclass: #RecipeTest
+TestCase subclass: #GroceryTest
+	instanceVariableNames: 'testObjects'
+	category: 'GroceryTest'!
+
+!GroceryTest methodsFor: 'not yet classified'!
+
+setUp
+
+	testObjects := GroceryTestObjects new.
+! !
+
+GroceryTest subclass: #RecipeTest
 	instanceVariableNames: ''
 	category: 'GroceryTest'!
 
@@ -21,7 +32,7 @@ testRecipeIsNamed
 	self assert: recipe name = 'BLTs'.
 ! !
 
-TestCase subclass: #IngredientTest
+GroceryTest subclass: #IngredientTest
 	instanceVariableNames: ''
 	category: 'GroceryTest'!
 
@@ -34,7 +45,7 @@ testIngredient
 	self assert: ingredient name = '1 Pound of Bacon'.
 ! !
 
-TestCase subclass: #RecipeViewTest
+GroceryTest subclass: #RecipeViewTest
 	instanceVariableNames: ''
 	category: 'GroceryTest'!
 
@@ -50,7 +61,7 @@ testDisplaysName
 	self assert: ( view el text = recipe name ).
 ! !
 
-TestCase subclass: #TextViewTest
+GroceryTest subclass: #TextViewTest
 	instanceVariableNames: ''
 	category: 'GroceryTest'!
 
@@ -65,11 +76,11 @@ testDisplaysText
 	self assert: ( view el text = text ).
 ! !
 
-TestCase subclass: #IngredientViewTest
+GroceryTest subclass: #IngredientViewTest
 	instanceVariableNames: ''
 	category: 'GroceryTest'!
 
-TestCase subclass: #IngredientsViewTest
+GroceryTest subclass: #IngredientsViewTest
 	instanceVariableNames: ''
 	category: 'GroceryTest'!
 
@@ -87,5 +98,16 @@ testDisplaysText
 	view render.
 	ingredients do: [ :anIngredient |
         	self assert: ( view el text includesSubString: anIngredient name )].
+! !
+
+Object subclass: #GroceryTestObjects
+	instanceVariableNames: 'bltIngredients'
+	category: 'GroceryTest'!
+
+!GroceryTestObjects methodsFor: 'not yet classified'!
+
+bltIngredients
+
+	^ bltIngredients ifNil: [ bltIngredients := '' ]
 ! !
 

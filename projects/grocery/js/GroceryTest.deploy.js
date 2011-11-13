@@ -1,5 +1,19 @@
 smalltalk.addPackage('GroceryTest', []);
-smalltalk.addClass('RecipeTest', smalltalk.TestCase, [], 'GroceryTest');
+smalltalk.addClass('GroceryTest', smalltalk.TestCase, ['testObjects'], 'GroceryTest');
+smalltalk.addMethod(
+'_setUp',
+smalltalk.method({
+selector: 'setUp',
+fn: function (){
+var self=this;
+self['@testObjects']=smalltalk.send((smalltalk.GroceryTestObjects || GroceryTestObjects), "_new", []);
+return self;}
+}),
+smalltalk.GroceryTest);
+
+
+
+smalltalk.addClass('RecipeTest', smalltalk.GroceryTest, [], 'GroceryTest');
 smalltalk.addMethod(
 '_testRecipeAddIngredient',
 smalltalk.method({
@@ -31,7 +45,7 @@ smalltalk.RecipeTest);
 
 
 
-smalltalk.addClass('IngredientTest', smalltalk.TestCase, [], 'GroceryTest');
+smalltalk.addClass('IngredientTest', smalltalk.GroceryTest, [], 'GroceryTest');
 smalltalk.addMethod(
 '_testIngredient',
 smalltalk.method({
@@ -47,7 +61,7 @@ smalltalk.IngredientTest);
 
 
 
-smalltalk.addClass('RecipeViewTest', smalltalk.TestCase, [], 'GroceryTest');
+smalltalk.addClass('RecipeViewTest', smalltalk.GroceryTest, [], 'GroceryTest');
 smalltalk.addMethod(
 '_testDisplaysName',
 smalltalk.method({
@@ -66,7 +80,7 @@ smalltalk.RecipeViewTest);
 
 
 
-smalltalk.addClass('TextViewTest', smalltalk.TestCase, [], 'GroceryTest');
+smalltalk.addClass('TextViewTest', smalltalk.GroceryTest, [], 'GroceryTest');
 smalltalk.addMethod(
 '_testDisplaysText',
 smalltalk.method({
@@ -85,10 +99,10 @@ smalltalk.TextViewTest);
 
 
 
-smalltalk.addClass('IngredientViewTest', smalltalk.TestCase, [], 'GroceryTest');
+smalltalk.addClass('IngredientViewTest', smalltalk.GroceryTest, [], 'GroceryTest');
 
 
-smalltalk.addClass('IngredientsViewTest', smalltalk.TestCase, [], 'GroceryTest');
+smalltalk.addClass('IngredientsViewTest', smalltalk.GroceryTest, [], 'GroceryTest');
 smalltalk.addMethod(
 '_testDisplaysText',
 smalltalk.method({
@@ -104,6 +118,20 @@ smalltalk.send(ingredients, "_do_", [(function(anIngredient){return smalltalk.se
 return self;}
 }),
 smalltalk.IngredientsViewTest);
+
+
+
+smalltalk.addClass('GroceryTestObjects', smalltalk.Object, ['bltIngredients'], 'GroceryTest');
+smalltalk.addMethod(
+'_bltIngredients',
+smalltalk.method({
+selector: 'bltIngredients',
+fn: function (){
+var self=this;
+return (($receiver = self['@bltIngredients']) == nil || $receiver == undefined) ? (function(){return self['@bltIngredients']="";})() : $receiver;
+return self;}
+}),
+smalltalk.GroceryTestObjects);
 
 
 

@@ -8,17 +8,16 @@
     <link rel="stylesheet" href="css/960.css" />
     <script type="text/javascript">
     loadAmber({
-      files: ['GroceryApp.js'],
+      files: ['Smackbone.js','Grocery.js','GroceryTest.js'],
       prefix: 'projects/grocery/js',
       ready: function() {
         $(function() {
-            smalltalk.RecipeSearch._new()._id_('62dbe43584f7ba52dc7b268479007a2c');
-            smalltalk.Browser._openOn_(smalltalk.RecipeView);
+            smalltalk.Browser._open();
         });
     }}); 
     </script>
   </head>
   <body>
-    <div id="recipe"></div>
+    <div id="container"></div>
   </body>
 </html>
