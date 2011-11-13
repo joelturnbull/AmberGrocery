@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Grocery</title>
+    <script src="../../js/amber.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/text.css" />
+    <link rel="stylesheet" href="css/960.css" />
+    <script type="text/javascript">
+    loadAmber({
+      files: ['GroceryApp.js'],
+      prefix: 'projects/grocery_prototype/js',
+      ready: function() {
+        $(function() {
+            smalltalk.RecipeSearch._new()._id_('62dbe43584f7ba52dc7b268479007a2c');
+            smalltalk.Browser._openOn_(smalltalk.RecipeView);
+        });
+    }}); 
+    </script>
+  </head>
+  <body>
+    <div id="recipe"></div>
+  </body>
+</html>

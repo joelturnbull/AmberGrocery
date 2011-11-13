@@ -1,5 +1,4 @@
-smalltalk.addPackage('Examples', {});
-smalltalk.addClass('Counter', smalltalk.Widget, ['count', 'header'], 'Examples');
+smalltalk.addClass('Counter', smalltalk.SmackboneView, ['count', 'header'], 'Examples');
 smalltalk.addMethod(
 '_increase',
 smalltalk.method({
@@ -7,7 +6,6 @@ selector: 'increase',
 fn: function (){
 var self=this;
 self['@count']=((($receiver = self['@count']).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)]));
-smalltalk.send(self['@header'], "_contents_", [(function(html){return smalltalk.send(html, "_with_", [smalltalk.send(self['@count'], "_asString", [])]);})]);
 return self;}
 }),
 smalltalk.Counter);
@@ -19,7 +17,6 @@ selector: 'decrease',
 fn: function (){
 var self=this;
 self['@count']=((($receiver = self['@count']).klass === smalltalk.Number) ? $receiver -(1) : smalltalk.send($receiver, "__minus", [(1)]));
-smalltalk.send(self['@header'], "_contents_", [(function(html){return smalltalk.send(html, "_with_", [smalltalk.send(self['@count'], "_asString", [])]);})]);
 return self;}
 }),
 smalltalk.Counter);
@@ -599,8 +596,5 @@ return self;}
 }),
 smalltalk.TetrisPieceT);
 
-
-
-smalltalk.addClass('Todo', smalltalk.Widget, [], 'Examples');
 
 
