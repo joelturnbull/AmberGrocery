@@ -43,6 +43,14 @@ testIngredient
 
 	ingredient := Ingredient named: '1 Pound of Bacon'.
 	self assert: ingredient name = '1 Pound of Bacon'.
+!
+
+testEquality
+| a b |
+
+	a := Ingredient named: '1 Pound of Bacon'.
+	b := Ingredient named: '1 Pound of Bacon'.
+	self assert: a = b.
 ! !
 
 GroceryTest subclass: #RecipeViewTest
@@ -54,11 +62,34 @@ GroceryTest subclass: #RecipeViewTest
 testDisplaysName
 | recipe view |
 
-	recipe := Recipe named: 'Tacos'.
-	view := RecipeView on: recipe.
+	recipe := testObjects blts.
+	view := ( RecipeView on: recipe ) render.
+	self assert: ( view el text includesSubString: recipe name ).
+!
 
-	view render.
-	self assert: ( view el text = recipe name ).
+testDisplaysIngredients
+| recipe view |
+
+	recipe := testObjects blts.
+	view := ( RecipeView on: recipe ) render.
+	recipe ingredients do: [ :anIngredient | 
+		self assert: ( view el text includesSubString: anIngredient name ) ].
+!
+
+testDisplaysAddIngredient
+| recipe view |
+
+	recipe := testObjects blts.
+	view := ( RecipeView on: recipe ) render.
+	self assert: ( view el text includesSubString: 'Add Ingredient' ).
+!
+
+testAddIngredient
+| recipe view |
+
+	recipe := testObjects blts.
+	view := ( RecipeView on: recipe ) render.
+	self assert: ( view el text includesSubString: 'Add Ingredient' ).
 ! !
 
 GroceryTest subclass: #TextViewTest
@@ -89,25 +120,49 @@ GroceryTest subclass: #IngredientsViewTest
 testDisplaysText
 | ingredients view |
 
-	ingredients := 
-		Array 
-			with: ( Ingredient named: '1 Pound of Bacon' )
-			with: ( Ingredient named: '1/2 Head of Lettuce' )
-			with: ( Ingredient named: '1 Tomato' ).
-	view := IngredientsView on: ingredients.
-	view render.
+	ingredients := testObjects bltIngredients.
+	view := ( IngredientsView on: ingredients ) render.
 	ingredients do: [ :anIngredient |
         	self assert: ( view el text includesSubString: anIngredient name )].
 ! !
 
 Object subclass: #GroceryTestObjects
-	instanceVariableNames: 'bltIngredients'
+	instanceVariableNames: 'bltIngredients blts'
 	category: 'GroceryTest'!
 
 !GroceryTestObjects methodsFor: 'not yet classified'!
 
 bltIngredients
 
-	^ bltIngredients ifNil: [ bltIngredients := '' ]
+	^ bltIngredients ifNil: [ 
+          	bltIngredients := 
+                	Array 
+				with: ( Ingredient named: '1 Pound of Bacon' )
+				with: ( Ingredient named: '1/2 Head of Lettuce' )
+				with: ( Ingredient named: '1 Tomato' )]
+!
+
+blts
+
+	^ blts ifNil: [ blts := Recipe named: 'BLTs' ingredients: self bltIngredients ]
+! !
+
+GroceryTest subclass: #IngredientFormTest
+	instanceVariableNames: ''
+	category: 'GroceryTest'!
+
+!IngredientFormTest methodsFor: 'not yet classified'!
+
+testAddIngredient
+| recipe ingredientForm |
+
+	recipe := testObjects blts.
+	ingredientForm := IngredientForm onClick: [ :anIngredient | recipe add: anIngredient ].
+
+	ingredientForm render.
+	ingredientForm val: 'Mayonnaise'.
+	ingredientForm click.
+
+	self assert: ( recipe includes: ( Ingredient named: 'Mayonnaise' )).
 ! !
 

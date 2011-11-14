@@ -57,6 +57,11 @@ initializeNamed: aName
 name
 
 	^  name
+!
+
+= anIngredient
+
+	^ ( anIngredient isKindOf: self class ) and: [ anIngredient name = self name ]
 ! !
 
 !Ingredient class methodsFor: 'not yet classified'!
@@ -100,12 +105,26 @@ renderOn: html
 
 	( TextView on: self recipe name ) renderOn: html.
 	( IngredientsView on: self recipe ingredients ) renderOn: html.
-window alert: el text.
+	self renderIngredientAdderOn: html.
 !
 
 recipe
 
 	^ model
+!
+
+renderIngredientAdderOn: html
+| input button |
+
+	input := html input.
+        button := html button with: 'Add Ingredient'.
+	
+"	button asJQuery click: [ 
+          	self recipe add: ( Ingredient named: input asJQuery val ).
+          	self recipe save.
+          	self refresh.
+        ]
+"
 ! !
 
 !RecipeView class methodsFor: 'not yet classified'!
@@ -162,5 +181,49 @@ renderOn: html
 ingredient
 
 	^ model
+! !
+
+ModelView subclass: #IngredientForm
+	instanceVariableNames: 'name clickAction button input'
+	category: 'Grocery'!
+
+!IngredientForm methodsFor: 'not yet classified'!
+
+initializeOnClick: aBlock
+
+	clickAction := aBlock
+!
+
+renderOn: html
+
+	input := html input.
+	button := html button with: 'Add Ingredient'.
+
+	button asJQuery click: [ clickAction value: ( Ingredient named: input asJQuery val ) ]
+"
+	button asJQuery click: [ 
+          	self recipe add: ( Ingredient named: input asJQuery val ).
+          	self recipe save.
+          	self refresh.
+        ]
+"
+!
+
+text: aString
+
+	input asJQuery val: aString.
+input asJQuery val inspect.
+!
+
+click
+
+	button asJQuery click
+! !
+
+!IngredientForm class methodsFor: 'not yet classified'!
+
+onClick: aBlock
+
+	^ self new initializeOnClick: aBlock
 ! !
 

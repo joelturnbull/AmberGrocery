@@ -103,6 +103,17 @@ return self;}
 }),
 smalltalk.Ingredient);
 
+smalltalk.addMethod(
+'__eq',
+smalltalk.method({
+selector: '=',
+fn: function (anIngredient){
+var self=this;
+return smalltalk.send(smalltalk.send(anIngredient, "_isKindOf_", [smalltalk.send(self, "_class", [])]), "_and_", [(function(){return smalltalk.send(smalltalk.send(anIngredient, "_name", []), "__eq", [smalltalk.send(self, "_name", [])]);})]);
+return self;}
+}),
+smalltalk.Ingredient);
+
 
 smalltalk.addMethod(
 '_named_',
@@ -162,7 +173,7 @@ fn: function (html){
 var self=this;
 smalltalk.send(smalltalk.send((smalltalk.TextView || TextView), "_on_", [smalltalk.send(smalltalk.send(self, "_recipe", []), "_name", [])]), "_renderOn_", [html]);
 smalltalk.send(smalltalk.send((smalltalk.IngredientsView || IngredientsView), "_on_", [smalltalk.send(smalltalk.send(self, "_recipe", []), "_ingredients", [])]), "_renderOn_", [html]);
-smalltalk.send((typeof window == 'undefined' ? nil : window), "_alert_", [smalltalk.send(self['@el'], "_text", [])]);
+smalltalk.send(self, "_renderIngredientAdderOn_", [html]);
 return self;}
 }),
 smalltalk.RecipeView);
@@ -174,6 +185,20 @@ selector: 'recipe',
 fn: function (){
 var self=this;
 return self['@model'];
+return self;}
+}),
+smalltalk.RecipeView);
+
+smalltalk.addMethod(
+'_renderIngredientAdderOn_',
+smalltalk.method({
+selector: 'renderIngredientAdderOn:',
+fn: function (html){
+var self=this;
+var input=nil;
+var button=nil;
+input=smalltalk.send(html, "_input", []);
+button=smalltalk.send(smalltalk.send(html, "_button", []), "_with_", ["Add Ingredient"]);
 return self;}
 }),
 smalltalk.RecipeView);
@@ -264,5 +289,66 @@ return self;}
 }),
 smalltalk.IngredientView);
 
+
+
+smalltalk.addClass('IngredientForm', smalltalk.ModelView, ['name', 'clickAction', 'button', 'input'], 'Grocery');
+smalltalk.addMethod(
+'_initializeOnClick_',
+smalltalk.method({
+selector: 'initializeOnClick:',
+fn: function (aBlock){
+var self=this;
+self['@clickAction']=aBlock;
+return self;}
+}),
+smalltalk.IngredientForm);
+
+smalltalk.addMethod(
+'_renderOn_',
+smalltalk.method({
+selector: 'renderOn:',
+fn: function (html){
+var self=this;
+self['@input']=smalltalk.send(html, "_input", []);
+self['@button']=smalltalk.send(smalltalk.send(html, "_button", []), "_with_", ["Add Ingredient"]);
+smalltalk.send(smalltalk.send(self['@button'], "_asJQuery", []), "_click_", [(function(){return smalltalk.send(self['@clickAction'], "_value_", [smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", [smalltalk.send(smalltalk.send(self['@input'], "_asJQuery", []), "_val", [])])]);})]);
+return self;}
+}),
+smalltalk.IngredientForm);
+
+smalltalk.addMethod(
+'_text_',
+smalltalk.method({
+selector: 'text:',
+fn: function (aString){
+var self=this;
+smalltalk.send(smalltalk.send(self['@input'], "_asJQuery", []), "_val_", [aString]);
+smalltalk.send(smalltalk.send(smalltalk.send(self['@input'], "_asJQuery", []), "_val", []), "_inspect", []);
+return self;}
+}),
+smalltalk.IngredientForm);
+
+smalltalk.addMethod(
+'_click',
+smalltalk.method({
+selector: 'click',
+fn: function (){
+var self=this;
+smalltalk.send(smalltalk.send(self['@button'], "_asJQuery", []), "_click", []);
+return self;}
+}),
+smalltalk.IngredientForm);
+
+
+smalltalk.addMethod(
+'_onClick_',
+smalltalk.method({
+selector: 'onClick:',
+fn: function (aBlock){
+var self=this;
+return smalltalk.send(smalltalk.send(self, "_new", []), "_initializeOnClick_", [aBlock]);
+return self;}
+}),
+smalltalk.IngredientForm.klass);
 
 

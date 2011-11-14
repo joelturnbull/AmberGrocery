@@ -79,6 +79,26 @@ referencedClasses: ["Ingredient"]
 }),
 smalltalk.IngredientTest);
 
+smalltalk.addMethod(
+unescape('_testEquality'),
+smalltalk.method({
+selector: unescape('testEquality'),
+category: 'not yet classified',
+fn: function (){
+var self=this;
+var a=nil;
+var b=nil;
+a=smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", ["1 Pound of Bacon"]);
+b=smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", ["1 Pound of Bacon"]);
+smalltalk.send(self, "_assert_", [smalltalk.send(a, "__eq", [b])]);
+return self;},
+args: [],
+source: unescape('testEquality%0A%7C%20a%20b%20%7C%0A%0A%09a%20%3A%3D%20Ingredient%20named%3A%20%271%20Pound%20of%20Bacon%27.%0A%09b%20%3A%3D%20Ingredient%20named%3A%20%271%20Pound%20of%20Bacon%27.%0A%09self%20assert%3A%20a%20%3D%20b.'),
+messageSends: ["named:", "assert:", unescape("%3D")],
+referencedClasses: ["Ingredient"]
+}),
+smalltalk.IngredientTest);
+
 
 
 smalltalk.addClass('RecipeViewTest', smalltalk.GroceryTest, [], 'GroceryTest');
@@ -91,15 +111,74 @@ fn: function (){
 var self=this;
 var recipe=nil;
 var view=nil;
-recipe=smalltalk.send((smalltalk.Recipe || Recipe), "_named_", ["Tacos"]);
-view=smalltalk.send((smalltalk.RecipeView || RecipeView), "_on_", [recipe]);
-smalltalk.send(view, "_render", []);
-smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(smalltalk.send(view, "_el", []), "_text", []), "__eq", [smalltalk.send(recipe, "_name", [])])]);
+recipe=smalltalk.send(self['@testObjects'], "_blts", []);
+view=smalltalk.send(smalltalk.send((smalltalk.RecipeView || RecipeView), "_on_", [recipe]), "_render", []);
+smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(smalltalk.send(view, "_el", []), "_text", []), "_includesSubString_", [smalltalk.send(recipe, "_name", [])])]);
 return self;},
 args: [],
-source: unescape('testDisplaysName%0A%7C%20recipe%20view%20%7C%0A%0A%09recipe%20%3A%3D%20Recipe%20named%3A%20%27Tacos%27.%0A%09view%20%3A%3D%20RecipeView%20on%3A%20recipe.%0A%0A%09view%20render.%0A%09self%20assert%3A%20%28%20view%20el%20text%20%3D%20recipe%20name%20%29.'),
-messageSends: ["named:", "on:", "render", "assert:", unescape("%3D"), "text", "el", "name"],
-referencedClasses: ["Recipe", "RecipeView"]
+source: unescape('testDisplaysName%0A%7C%20recipe%20view%20%7C%0A%0A%09recipe%20%3A%3D%20testObjects%20blts.%0A%09view%20%3A%3D%20%28%20RecipeView%20on%3A%20recipe%20%29%20render.%0A%09self%20assert%3A%20%28%20view%20el%20text%20includesSubString%3A%20recipe%20name%20%29.'),
+messageSends: ["blts", "render", "on:", "assert:", "includesSubString:", "text", "el", "name"],
+referencedClasses: ["RecipeView"]
+}),
+smalltalk.RecipeViewTest);
+
+smalltalk.addMethod(
+unescape('_testDisplaysIngredients'),
+smalltalk.method({
+selector: unescape('testDisplaysIngredients'),
+category: 'not yet classified',
+fn: function (){
+var self=this;
+var recipe=nil;
+var view=nil;
+recipe=smalltalk.send(self['@testObjects'], "_blts", []);
+view=smalltalk.send(smalltalk.send((smalltalk.RecipeView || RecipeView), "_on_", [recipe]), "_render", []);
+smalltalk.send(smalltalk.send(recipe, "_ingredients", []), "_do_", [(function(anIngredient){return smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(smalltalk.send(view, "_el", []), "_text", []), "_includesSubString_", [smalltalk.send(anIngredient, "_name", [])])]);})]);
+return self;},
+args: [],
+source: unescape('testDisplaysIngredients%0A%7C%20recipe%20view%20%7C%0A%0A%09recipe%20%3A%3D%20testObjects%20blts.%0A%09view%20%3A%3D%20%28%20RecipeView%20on%3A%20recipe%20%29%20render.%0A%09recipe%20ingredients%20do%3A%20%5B%20%3AanIngredient%20%7C%20%0A%09%09self%20assert%3A%20%28%20view%20el%20text%20includesSubString%3A%20anIngredient%20name%20%29%20%5D.'),
+messageSends: ["blts", "render", "on:", "do:", "ingredients", "assert:", "includesSubString:", "text", "el", "name"],
+referencedClasses: ["RecipeView"]
+}),
+smalltalk.RecipeViewTest);
+
+smalltalk.addMethod(
+unescape('_testDisplaysAddIngredient'),
+smalltalk.method({
+selector: unescape('testDisplaysAddIngredient'),
+category: 'not yet classified',
+fn: function (){
+var self=this;
+var recipe=nil;
+var view=nil;
+recipe=smalltalk.send(self['@testObjects'], "_blts", []);
+view=smalltalk.send(smalltalk.send((smalltalk.RecipeView || RecipeView), "_on_", [recipe]), "_render", []);
+smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(smalltalk.send(view, "_el", []), "_text", []), "_includesSubString_", ["Add Ingredient"])]);
+return self;},
+args: [],
+source: unescape('testDisplaysAddIngredient%0A%7C%20recipe%20view%20%7C%0A%0A%09recipe%20%3A%3D%20testObjects%20blts.%0A%09view%20%3A%3D%20%28%20RecipeView%20on%3A%20recipe%20%29%20render.%0A%09self%20assert%3A%20%28%20view%20el%20text%20includesSubString%3A%20%27Add%20Ingredient%27%20%29.'),
+messageSends: ["blts", "render", "on:", "assert:", "includesSubString:", "text", "el"],
+referencedClasses: ["RecipeView"]
+}),
+smalltalk.RecipeViewTest);
+
+smalltalk.addMethod(
+unescape('_testAddIngredient'),
+smalltalk.method({
+selector: unescape('testAddIngredient'),
+category: 'not yet classified',
+fn: function (){
+var self=this;
+var recipe=nil;
+var view=nil;
+recipe=smalltalk.send(self['@testObjects'], "_blts", []);
+view=smalltalk.send(smalltalk.send((smalltalk.RecipeView || RecipeView), "_on_", [recipe]), "_render", []);
+smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(smalltalk.send(view, "_el", []), "_text", []), "_includesSubString_", ["Add Ingredient"])]);
+return self;},
+args: [],
+source: unescape('testAddIngredient%0A%7C%20recipe%20view%20%7C%0A%0A%09recipe%20%3A%3D%20testObjects%20blts.%0A%09view%20%3A%3D%20%28%20RecipeView%20on%3A%20recipe%20%29%20render.%0A%09self%20assert%3A%20%28%20view%20el%20text%20includesSubString%3A%20%27Add%20Ingredient%27%20%29.'),
+messageSends: ["blts", "render", "on:", "assert:", "includesSubString:", "text", "el"],
+referencedClasses: ["RecipeView"]
 }),
 smalltalk.RecipeViewTest);
 
@@ -142,21 +221,20 @@ fn: function (){
 var self=this;
 var ingredients=nil;
 var view=nil;
-ingredients=smalltalk.send((smalltalk.Array || Array), "_with_with_with_", [smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", ["1 Pound of Bacon"]), smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", [unescape("1/2%20Head%20of%20Lettuce")]), smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", ["1 Tomato"])]);
-view=smalltalk.send((smalltalk.IngredientsView || IngredientsView), "_on_", [ingredients]);
-smalltalk.send(view, "_render", []);
+ingredients=smalltalk.send(self['@testObjects'], "_bltIngredients", []);
+view=smalltalk.send(smalltalk.send((smalltalk.IngredientsView || IngredientsView), "_on_", [ingredients]), "_render", []);
 smalltalk.send(ingredients, "_do_", [(function(anIngredient){return smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(smalltalk.send(view, "_el", []), "_text", []), "_includesSubString_", [smalltalk.send(anIngredient, "_name", [])])]);})]);
 return self;},
 args: [],
-source: unescape('testDisplaysText%0A%7C%20ingredients%20view%20%7C%0A%0A%09ingredients%20%3A%3D%20%0A%09%09Array%20%0A%09%09%09with%3A%20%28%20Ingredient%20named%3A%20%271%20Pound%20of%20Bacon%27%20%29%0A%09%09%09with%3A%20%28%20Ingredient%20named%3A%20%271/2%20Head%20of%20Lettuce%27%20%29%0A%09%09%09with%3A%20%28%20Ingredient%20named%3A%20%271%20Tomato%27%20%29.%0A%09view%20%3A%3D%20IngredientsView%20on%3A%20ingredients.%0A%09view%20render.%0A%09ingredients%20do%3A%20%5B%20%3AanIngredient%20%7C%0A%20%20%20%20%20%20%20%20%09self%20assert%3A%20%28%20view%20el%20text%20includesSubString%3A%20anIngredient%20name%20%29%5D.'),
-messageSends: ["with:with:with:", "named:", "on:", "render", "do:", "assert:", "includesSubString:", "text", "el", "name"],
-referencedClasses: ["Array", "Ingredient", "IngredientsView"]
+source: unescape('testDisplaysText%0A%7C%20ingredients%20view%20%7C%0A%0A%09ingredients%20%3A%3D%20testObjects%20bltIngredients.%0A%09view%20%3A%3D%20%28%20IngredientsView%20on%3A%20ingredients%20%29%20render.%0A%09ingredients%20do%3A%20%5B%20%3AanIngredient%20%7C%0A%20%20%20%20%20%20%20%20%09self%20assert%3A%20%28%20view%20el%20text%20includesSubString%3A%20anIngredient%20name%20%29%5D.'),
+messageSends: ["bltIngredients", "render", "on:", "do:", "assert:", "includesSubString:", "text", "el", "name"],
+referencedClasses: ["IngredientsView"]
 }),
 smalltalk.IngredientsViewTest);
 
 
 
-smalltalk.addClass('GroceryTestObjects', smalltalk.Object, ['bltIngredients'], 'GroceryTest');
+smalltalk.addClass('GroceryTestObjects', smalltalk.Object, ['bltIngredients', 'blts'], 'GroceryTest');
 smalltalk.addMethod(
 unescape('_bltIngredients'),
 smalltalk.method({
@@ -164,14 +242,56 @@ selector: unescape('bltIngredients'),
 category: 'not yet classified',
 fn: function (){
 var self=this;
-return (($receiver = self['@bltIngredients']) == nil || $receiver == undefined) ? (function(){return self['@bltIngredients']="";})() : $receiver;
+return (($receiver = self['@bltIngredients']) == nil || $receiver == undefined) ? (function(){return self['@bltIngredients']=smalltalk.send((smalltalk.Array || Array), "_with_with_with_", [smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", ["1 Pound of Bacon"]), smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", [unescape("1/2%20Head%20of%20Lettuce")]), smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", ["1 Tomato"])]);})() : $receiver;
 return self;},
 args: [],
-source: unescape('bltIngredients%0A%0A%09%5E%20bltIngredients%20ifNil%3A%20%5B%20bltIngredients%20%3A%3D%20%27%27%20%5D'),
-messageSends: ["ifNil:"],
-referencedClasses: []
+source: unescape('bltIngredients%0A%0A%09%5E%20bltIngredients%20ifNil%3A%20%5B%20%0A%20%20%20%20%20%20%20%20%20%20%09bltIngredients%20%3A%3D%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09Array%20%0A%09%09%09%09with%3A%20%28%20Ingredient%20named%3A%20%271%20Pound%20of%20Bacon%27%20%29%0A%09%09%09%09with%3A%20%28%20Ingredient%20named%3A%20%271/2%20Head%20of%20Lettuce%27%20%29%0A%09%09%09%09with%3A%20%28%20Ingredient%20named%3A%20%271%20Tomato%27%20%29%5D'),
+messageSends: ["ifNil:", "with:with:with:", "named:"],
+referencedClasses: ["Array", "Ingredient"]
 }),
 smalltalk.GroceryTestObjects);
+
+smalltalk.addMethod(
+unescape('_blts'),
+smalltalk.method({
+selector: unescape('blts'),
+category: 'not yet classified',
+fn: function (){
+var self=this;
+return (($receiver = self['@blts']) == nil || $receiver == undefined) ? (function(){return self['@blts']=smalltalk.send((smalltalk.Recipe || Recipe), "_named_ingredients_", ["BLTs", smalltalk.send(self, "_bltIngredients", [])]);})() : $receiver;
+return self;},
+args: [],
+source: unescape('blts%0A%0A%09%5E%20blts%20ifNil%3A%20%5B%20blts%20%3A%3D%20Recipe%20named%3A%20%27BLTs%27%20ingredients%3A%20self%20bltIngredients%20%5D'),
+messageSends: ["ifNil:", "named:ingredients:", "bltIngredients"],
+referencedClasses: ["Recipe"]
+}),
+smalltalk.GroceryTestObjects);
+
+
+
+smalltalk.addClass('IngredientFormTest', smalltalk.GroceryTest, [], 'GroceryTest');
+smalltalk.addMethod(
+unescape('_testAddIngredient'),
+smalltalk.method({
+selector: unescape('testAddIngredient'),
+category: 'not yet classified',
+fn: function (){
+var self=this;
+var recipe=nil;
+var ingredientForm=nil;
+recipe=smalltalk.send(self['@testObjects'], "_blts", []);
+ingredientForm=smalltalk.send((smalltalk.IngredientForm || IngredientForm), "_onClick_", [(function(anIngredient){return smalltalk.send(recipe, "_add_", [anIngredient]);})]);
+smalltalk.send(ingredientForm, "_render", []);
+smalltalk.send(ingredientForm, "_val_", ["Mayonnaise"]);
+smalltalk.send(ingredientForm, "_click", []);
+smalltalk.send(self, "_assert_", [smalltalk.send(recipe, "_includes_", [smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", ["Mayonnaise"])])]);
+return self;},
+args: [],
+source: unescape('testAddIngredient%0A%7C%20recipe%20ingredientForm%20%7C%0A%0A%09recipe%20%3A%3D%20testObjects%20blts.%0A%09ingredientForm%20%3A%3D%20IngredientForm%20onClick%3A%20%5B%20%3AanIngredient%20%7C%20recipe%20add%3A%20anIngredient%20%5D.%0A%0A%09ingredientForm%20render.%0A%09ingredientForm%20val%3A%20%27Mayonnaise%27.%0A%09ingredientForm%20click.%0A%0A%09self%20assert%3A%20%28%20recipe%20includes%3A%20%28%20Ingredient%20named%3A%20%27Mayonnaise%27%20%29%29.'),
+messageSends: ["blts", "onClick:", "add:", "render", "val:", "click", "assert:", "includes:", "named:"],
+referencedClasses: ["IngredientForm", "Ingredient"]
+}),
+smalltalk.IngredientFormTest);
 
 
 
