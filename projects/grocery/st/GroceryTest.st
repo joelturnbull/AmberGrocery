@@ -82,14 +82,6 @@ testDisplaysAddIngredient
 	recipe := testObjects blts.
 	view := ( RecipeView on: recipe ) render.
 	self assert: ( view el text includesSubString: 'Add Ingredient' ).
-!
-
-testAddIngredient
-| recipe view |
-
-	recipe := testObjects blts.
-	view := ( RecipeView on: recipe ) render.
-	self assert: ( view el text includesSubString: 'Add Ingredient' ).
 ! !
 
 GroceryTest subclass: #TextViewTest
@@ -153,7 +145,7 @@ GroceryTest subclass: #IngredientFormTest
 
 !IngredientFormTest methodsFor: 'not yet classified'!
 
-testAddIngredient
+testAddsIngredient
 | recipe ingredientForm |
 
 	recipe := testObjects blts.
@@ -164,5 +156,37 @@ testAddIngredient
 	ingredientForm click.
 
 	self assert: ( recipe includes: ( Ingredient named: 'Mayonnaise' )).
+! !
+
+GroceryTest subclass: #RecipeWidgetTest
+	instanceVariableNames: ''
+	category: 'GroceryTest'!
+
+!RecipeWidgetTest methodsFor: 'not yet classified'!
+
+testAddIngredient
+| recipeWidget |
+
+	recipeWidget := RecipeWidget on: testObjects blts.
+	recipeWidget render.
+	recipeWidget val: 'Mayonnaise'.
+	recipeWidget click.
+	self assert: ( recipeWidget text includesSubString: 'Mayonnaise' ).
+! !
+
+GroceryTest subclass: #IngredientsWidgetTest
+	instanceVariableNames: ''
+	category: 'GroceryTest'!
+
+!IngredientsWidgetTest methodsFor: 'not yet classified'!
+
+testAddIngredient
+| widget |
+
+	widget := IngredientsWidget on: testObjects bltIngredients onClick: [].
+	widget render.
+	widget val: 'Mayonnaise'.
+	widget click.
+	self assert: ( widget text includesSubString: 'Mayonnaise' ).
 ! !
 

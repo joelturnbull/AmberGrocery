@@ -122,21 +122,6 @@ return self;}
 }),
 smalltalk.RecipeViewTest);
 
-smalltalk.addMethod(
-'_testAddIngredient',
-smalltalk.method({
-selector: 'testAddIngredient',
-fn: function (){
-var self=this;
-var recipe=nil;
-var view=nil;
-recipe=smalltalk.send(self['@testObjects'], "_blts", []);
-view=smalltalk.send(smalltalk.send((smalltalk.RecipeView || RecipeView), "_on_", [recipe]), "_render", []);
-smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(smalltalk.send(view, "_el", []), "_text", []), "_includesSubString_", ["Add Ingredient"])]);
-return self;}
-}),
-smalltalk.RecipeViewTest);
-
 
 
 smalltalk.addClass('TextViewTest', smalltalk.GroceryTest, [], 'GroceryTest');
@@ -206,9 +191,9 @@ smalltalk.GroceryTestObjects);
 
 smalltalk.addClass('IngredientFormTest', smalltalk.GroceryTest, [], 'GroceryTest');
 smalltalk.addMethod(
-'_testAddIngredient',
+'_testAddsIngredient',
 smalltalk.method({
-selector: 'testAddIngredient',
+selector: 'testAddsIngredient',
 fn: function (){
 var self=this;
 var recipe=nil;
@@ -222,6 +207,44 @@ smalltalk.send(self, "_assert_", [smalltalk.send(recipe, "_includes_", [smalltal
 return self;}
 }),
 smalltalk.IngredientFormTest);
+
+
+
+smalltalk.addClass('RecipeWidgetTest', smalltalk.GroceryTest, [], 'GroceryTest');
+smalltalk.addMethod(
+'_testAddIngredient',
+smalltalk.method({
+selector: 'testAddIngredient',
+fn: function (){
+var self=this;
+var recipeWidget=nil;
+recipeWidget=smalltalk.send((smalltalk.RecipeWidget || RecipeWidget), "_on_", [smalltalk.send(self['@testObjects'], "_blts", [])]);
+smalltalk.send(recipeWidget, "_render", []);
+smalltalk.send(recipeWidget, "_val_", ["Mayonnaise"]);
+smalltalk.send(recipeWidget, "_click", []);
+smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(recipeWidget, "_text", []), "_includesSubString_", ["Mayonnaise"])]);
+return self;}
+}),
+smalltalk.RecipeWidgetTest);
+
+
+
+smalltalk.addClass('IngredientsWidgetTest', smalltalk.GroceryTest, [], 'GroceryTest');
+smalltalk.addMethod(
+'_testAddIngredient',
+smalltalk.method({
+selector: 'testAddIngredient',
+fn: function (){
+var self=this;
+var widget=nil;
+widget=smalltalk.send((smalltalk.IngredientsWidget || IngredientsWidget), "_on_onClick_", [smalltalk.send(self['@testObjects'], "_bltIngredients", []), (function(){return nil;})]);
+smalltalk.send(widget, "_render", []);
+smalltalk.send(widget, "_val_", ["Mayonnaise"]);
+smalltalk.send(widget, "_click", []);
+smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(widget, "_text", []), "_includesSubString_", ["Mayonnaise"])]);
+return self;}
+}),
+smalltalk.IngredientsWidgetTest);
 
 
 

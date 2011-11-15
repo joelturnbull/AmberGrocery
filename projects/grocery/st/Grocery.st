@@ -17,7 +17,7 @@ includes: anIngredient
 
 ingredients
 
-	^ ingredients copy
+	^ ingredients
 !
 
 name
@@ -191,7 +191,7 @@ ModelView subclass: #IngredientForm
 
 initializeOnClick: aBlock
 
-	clickAction := aBlock
+	clickAction := aBlock.
 !
 
 renderOn: html
@@ -199,7 +199,9 @@ renderOn: html
 	input := html input.
 	button := html button with: 'Add Ingredient'.
 
-	button asJQuery click: [ clickAction value: ( Ingredient named: input asJQuery val ) ]
+	button asJQuery click: [ 
+            clickAction value: ( Ingredient named: input asJQuery val ).
+        ]
 "
 	button asJQuery click: [ 
           	self recipe add: ( Ingredient named: input asJQuery val ).
@@ -209,15 +211,14 @@ renderOn: html
 "
 !
 
-text: aString
-
-	input asJQuery val: aString.
-input asJQuery val inspect.
-!
-
 click
 
 	button asJQuery click
+!
+
+val: aString
+
+	input asJQuery val: aString.
 ! !
 
 !IngredientForm class methodsFor: 'not yet classified'!
@@ -225,5 +226,103 @@ click
 onClick: aBlock
 
 	^ self new initializeOnClick: aBlock
+! !
+
+Object subclass: #GroceryWidget
+	instanceVariableNames: ''
+	category: 'Grocery'!
+
+!GroceryWidget methodsFor: 'not yet classified'!
+
+render
+
+	self components do: [ :aComponent | aComponent render ]
+! !
+
+GroceryWidget subclass: #RecipeWidget
+	instanceVariableNames: 'view ingredientsWidget'
+	category: 'Grocery'!
+
+!RecipeWidget methodsFor: 'not yet classified'!
+
+initializeOn: aRecipe
+
+	view := RecipeView on: aRecipe.
+	ingredientsWidget := IngredientsWidget on: aRecipe ingredients onClick: [ self render ].
+!
+
+val: aValue
+
+	^ ingredientsWidget val: aValue
+!
+
+components
+
+	^ Array 
+		with: view
+		with: ingredientsWidget
+!
+
+click
+
+	^ ingredientsWidget click
+!
+
+text
+
+	^ view el text
+! !
+
+!RecipeWidget class methodsFor: 'not yet classified'!
+
+on: aModel
+
+	^ self new initializeOn: aModel
+! !
+
+GroceryWidget subclass: #IngredientsWidget
+	instanceVariableNames: 'view ingredientForm clickAction'
+	category: 'Grocery'!
+
+!IngredientsWidget methodsFor: 'not yet classified'!
+
+val: aValue
+
+	^ ingredientForm val: aValue
+!
+
+components
+
+	^ Array 
+		with: view
+		with: ingredientForm
+!
+
+click
+
+	^ ingredientForm click
+!
+
+initializeOn: anArray onClick: aBlock
+
+	view := IngredientsView on: anArray.
+	clickAction := aBlock.
+	ingredientForm := 
+		IngredientForm onClick: [ :anIngredient | 
+						anArray add: anIngredient.
+                                        	self render.
+                                        	clickAction value. ]
+!
+
+text
+
+	^ view el text
+! !
+
+!IngredientsWidget class methodsFor: 'not yet classified'!
+
+on: aModel onClick: aBlock
+
+	^ self new initializeOn: aModel onClick: aBlock
 ! !
 

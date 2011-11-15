@@ -162,26 +162,6 @@ referencedClasses: ["RecipeView"]
 }),
 smalltalk.RecipeViewTest);
 
-smalltalk.addMethod(
-unescape('_testAddIngredient'),
-smalltalk.method({
-selector: unescape('testAddIngredient'),
-category: 'not yet classified',
-fn: function (){
-var self=this;
-var recipe=nil;
-var view=nil;
-recipe=smalltalk.send(self['@testObjects'], "_blts", []);
-view=smalltalk.send(smalltalk.send((smalltalk.RecipeView || RecipeView), "_on_", [recipe]), "_render", []);
-smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(smalltalk.send(view, "_el", []), "_text", []), "_includesSubString_", ["Add Ingredient"])]);
-return self;},
-args: [],
-source: unescape('testAddIngredient%0A%7C%20recipe%20view%20%7C%0A%0A%09recipe%20%3A%3D%20testObjects%20blts.%0A%09view%20%3A%3D%20%28%20RecipeView%20on%3A%20recipe%20%29%20render.%0A%09self%20assert%3A%20%28%20view%20el%20text%20includesSubString%3A%20%27Add%20Ingredient%27%20%29.'),
-messageSends: ["blts", "render", "on:", "assert:", "includesSubString:", "text", "el"],
-referencedClasses: ["RecipeView"]
-}),
-smalltalk.RecipeViewTest);
-
 
 
 smalltalk.addClass('TextViewTest', smalltalk.GroceryTest, [], 'GroceryTest');
@@ -271,9 +251,9 @@ smalltalk.GroceryTestObjects);
 
 smalltalk.addClass('IngredientFormTest', smalltalk.GroceryTest, [], 'GroceryTest');
 smalltalk.addMethod(
-unescape('_testAddIngredient'),
+unescape('_testAddsIngredient'),
 smalltalk.method({
-selector: unescape('testAddIngredient'),
+selector: unescape('testAddsIngredient'),
 category: 'not yet classified',
 fn: function (){
 var self=this;
@@ -287,11 +267,59 @@ smalltalk.send(ingredientForm, "_click", []);
 smalltalk.send(self, "_assert_", [smalltalk.send(recipe, "_includes_", [smalltalk.send((smalltalk.Ingredient || Ingredient), "_named_", ["Mayonnaise"])])]);
 return self;},
 args: [],
-source: unescape('testAddIngredient%0A%7C%20recipe%20ingredientForm%20%7C%0A%0A%09recipe%20%3A%3D%20testObjects%20blts.%0A%09ingredientForm%20%3A%3D%20IngredientForm%20onClick%3A%20%5B%20%3AanIngredient%20%7C%20recipe%20add%3A%20anIngredient%20%5D.%0A%0A%09ingredientForm%20render.%0A%09ingredientForm%20val%3A%20%27Mayonnaise%27.%0A%09ingredientForm%20click.%0A%0A%09self%20assert%3A%20%28%20recipe%20includes%3A%20%28%20Ingredient%20named%3A%20%27Mayonnaise%27%20%29%29.'),
+source: unescape('testAddsIngredient%0A%7C%20recipe%20ingredientForm%20%7C%0A%0A%09recipe%20%3A%3D%20testObjects%20blts.%0A%09ingredientForm%20%3A%3D%20IngredientForm%20onClick%3A%20%5B%20%3AanIngredient%20%7C%20recipe%20add%3A%20anIngredient%20%5D.%0A%0A%09ingredientForm%20render.%0A%09ingredientForm%20val%3A%20%27Mayonnaise%27.%0A%09ingredientForm%20click.%0A%0A%09self%20assert%3A%20%28%20recipe%20includes%3A%20%28%20Ingredient%20named%3A%20%27Mayonnaise%27%20%29%29.'),
 messageSends: ["blts", "onClick:", "add:", "render", "val:", "click", "assert:", "includes:", "named:"],
 referencedClasses: ["IngredientForm", "Ingredient"]
 }),
 smalltalk.IngredientFormTest);
+
+
+
+smalltalk.addClass('RecipeWidgetTest', smalltalk.GroceryTest, [], 'GroceryTest');
+smalltalk.addMethod(
+unescape('_testAddIngredient'),
+smalltalk.method({
+selector: unescape('testAddIngredient'),
+category: 'not yet classified',
+fn: function (){
+var self=this;
+var recipeWidget=nil;
+recipeWidget=smalltalk.send((smalltalk.RecipeWidget || RecipeWidget), "_on_", [smalltalk.send(self['@testObjects'], "_blts", [])]);
+smalltalk.send(recipeWidget, "_render", []);
+smalltalk.send(recipeWidget, "_val_", ["Mayonnaise"]);
+smalltalk.send(recipeWidget, "_click", []);
+smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(recipeWidget, "_text", []), "_includesSubString_", ["Mayonnaise"])]);
+return self;},
+args: [],
+source: unescape('testAddIngredient%0A%7C%20recipeWidget%20%7C%0A%0A%09recipeWidget%20%3A%3D%20RecipeWidget%20on%3A%20testObjects%20blts.%0A%09recipeWidget%20render.%0A%09recipeWidget%20val%3A%20%27Mayonnaise%27.%0A%09recipeWidget%20click.%0A%09self%20assert%3A%20%28%20recipeWidget%20text%20includesSubString%3A%20%27Mayonnaise%27%20%29.'),
+messageSends: ["on:", "blts", "render", "val:", "click", "assert:", "includesSubString:", "text"],
+referencedClasses: ["RecipeWidget"]
+}),
+smalltalk.RecipeWidgetTest);
+
+
+
+smalltalk.addClass('IngredientsWidgetTest', smalltalk.GroceryTest, [], 'GroceryTest');
+smalltalk.addMethod(
+unescape('_testAddIngredient'),
+smalltalk.method({
+selector: unescape('testAddIngredient'),
+category: 'not yet classified',
+fn: function (){
+var self=this;
+var widget=nil;
+widget=smalltalk.send((smalltalk.IngredientsWidget || IngredientsWidget), "_on_onClick_", [smalltalk.send(self['@testObjects'], "_bltIngredients", []), (function(){return nil;})]);
+smalltalk.send(widget, "_render", []);
+smalltalk.send(widget, "_val_", ["Mayonnaise"]);
+smalltalk.send(widget, "_click", []);
+smalltalk.send(self, "_assert_", [smalltalk.send(smalltalk.send(widget, "_text", []), "_includesSubString_", ["Mayonnaise"])]);
+return self;},
+args: [],
+source: unescape('testAddIngredient%0A%7C%20widget%20%7C%0A%0A%09widget%20%3A%3D%20IngredientsWidget%20on%3A%20testObjects%20bltIngredients%20onClick%3A%20%5B%5D.%0A%09widget%20render.%0A%09widget%20val%3A%20%27Mayonnaise%27.%0A%09widget%20click.%0A%09self%20assert%3A%20%28%20widget%20text%20includesSubString%3A%20%27Mayonnaise%27%20%29.'),
+messageSends: ["on:onClick:", "bltIngredients", "render", "val:", "click", "assert:", "includesSubString:", "text"],
+referencedClasses: ["IngredientsWidget"]
+}),
+smalltalk.IngredientsWidgetTest);
 
 
 

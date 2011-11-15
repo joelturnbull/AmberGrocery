@@ -28,7 +28,7 @@ smalltalk.method({
 selector: 'ingredients',
 fn: function (){
 var self=this;
-return smalltalk.send(self['@ingredients'], "_copy", []);
+return self['@ingredients'];
 return self;}
 }),
 smalltalk.Recipe);
@@ -317,24 +317,23 @@ return self;}
 smalltalk.IngredientForm);
 
 smalltalk.addMethod(
-'_text_',
-smalltalk.method({
-selector: 'text:',
-fn: function (aString){
-var self=this;
-smalltalk.send(smalltalk.send(self['@input'], "_asJQuery", []), "_val_", [aString]);
-smalltalk.send(smalltalk.send(smalltalk.send(self['@input'], "_asJQuery", []), "_val", []), "_inspect", []);
-return self;}
-}),
-smalltalk.IngredientForm);
-
-smalltalk.addMethod(
 '_click',
 smalltalk.method({
 selector: 'click',
 fn: function (){
 var self=this;
 smalltalk.send(smalltalk.send(self['@button'], "_asJQuery", []), "_click", []);
+return self;}
+}),
+smalltalk.IngredientForm);
+
+smalltalk.addMethod(
+'_val_',
+smalltalk.method({
+selector: 'val:',
+fn: function (aString){
+var self=this;
+smalltalk.send(smalltalk.send(self['@input'], "_asJQuery", []), "_val_", [aString]);
 return self;}
 }),
 smalltalk.IngredientForm);
@@ -350,5 +349,160 @@ return smalltalk.send(smalltalk.send(self, "_new", []), "_initializeOnClick_", [
 return self;}
 }),
 smalltalk.IngredientForm.klass);
+
+
+smalltalk.addClass('GroceryWidget', smalltalk.Object, [], 'Grocery');
+smalltalk.addMethod(
+'_render',
+smalltalk.method({
+selector: 'render',
+fn: function (){
+var self=this;
+smalltalk.send(smalltalk.send(self, "_components", []), "_do_", [(function(aComponent){return smalltalk.send(aComponent, "_render", []);})]);
+return self;}
+}),
+smalltalk.GroceryWidget);
+
+
+
+smalltalk.addClass('RecipeWidget', smalltalk.GroceryWidget, ['view', 'ingredientsWidget'], 'Grocery');
+smalltalk.addMethod(
+'_initializeOn_',
+smalltalk.method({
+selector: 'initializeOn:',
+fn: function (aRecipe){
+var self=this;
+self['@view']=smalltalk.send((smalltalk.RecipeView || RecipeView), "_on_", [aRecipe]);
+self['@ingredientsWidget']=smalltalk.send((smalltalk.IngredientsWidget || IngredientsWidget), "_on_onClick_", [smalltalk.send(aRecipe, "_ingredients", []), (function(){return smalltalk.send(self, "_render", []);})]);
+return self;}
+}),
+smalltalk.RecipeWidget);
+
+smalltalk.addMethod(
+'_val_',
+smalltalk.method({
+selector: 'val:',
+fn: function (aValue){
+var self=this;
+return smalltalk.send(self['@ingredientsWidget'], "_val_", [aValue]);
+return self;}
+}),
+smalltalk.RecipeWidget);
+
+smalltalk.addMethod(
+'_components',
+smalltalk.method({
+selector: 'components',
+fn: function (){
+var self=this;
+return smalltalk.send((smalltalk.Array || Array), "_with_with_", [self['@view'], self['@ingredientsWidget']]);
+return self;}
+}),
+smalltalk.RecipeWidget);
+
+smalltalk.addMethod(
+'_click',
+smalltalk.method({
+selector: 'click',
+fn: function (){
+var self=this;
+return smalltalk.send(self['@ingredientsWidget'], "_click", []);
+return self;}
+}),
+smalltalk.RecipeWidget);
+
+smalltalk.addMethod(
+'_text',
+smalltalk.method({
+selector: 'text',
+fn: function (){
+var self=this;
+return smalltalk.send(smalltalk.send(self['@view'], "_el", []), "_text", []);
+return self;}
+}),
+smalltalk.RecipeWidget);
+
+
+smalltalk.addMethod(
+'_on_',
+smalltalk.method({
+selector: 'on:',
+fn: function (aModel){
+var self=this;
+return smalltalk.send(smalltalk.send(self, "_new", []), "_initializeOn_", [aModel]);
+return self;}
+}),
+smalltalk.RecipeWidget.klass);
+
+
+smalltalk.addClass('IngredientsWidget', smalltalk.GroceryWidget, ['view', 'ingredientForm', 'clickAction'], 'Grocery');
+smalltalk.addMethod(
+'_val_',
+smalltalk.method({
+selector: 'val:',
+fn: function (aValue){
+var self=this;
+return smalltalk.send(self['@ingredientForm'], "_val_", [aValue]);
+return self;}
+}),
+smalltalk.IngredientsWidget);
+
+smalltalk.addMethod(
+'_components',
+smalltalk.method({
+selector: 'components',
+fn: function (){
+var self=this;
+return smalltalk.send((smalltalk.Array || Array), "_with_with_", [self['@view'], self['@ingredientForm']]);
+return self;}
+}),
+smalltalk.IngredientsWidget);
+
+smalltalk.addMethod(
+'_click',
+smalltalk.method({
+selector: 'click',
+fn: function (){
+var self=this;
+return smalltalk.send(self['@ingredientForm'], "_click", []);
+return self;}
+}),
+smalltalk.IngredientsWidget);
+
+smalltalk.addMethod(
+'_initializeOn_onClick_',
+smalltalk.method({
+selector: 'initializeOn:onClick:',
+fn: function (anArray, aBlock){
+var self=this;
+self['@view']=smalltalk.send((smalltalk.IngredientsView || IngredientsView), "_on_", [anArray]);
+self['@clickAction']=aBlock;
+self['@ingredientForm']=smalltalk.send((smalltalk.IngredientForm || IngredientForm), "_onClick_", [(function(anIngredient){smalltalk.send(anArray, "_add_", [anIngredient]);smalltalk.send(self, "_render", []);return smalltalk.send(self['@clickAction'], "_value", []);})]);
+return self;}
+}),
+smalltalk.IngredientsWidget);
+
+smalltalk.addMethod(
+'_text',
+smalltalk.method({
+selector: 'text',
+fn: function (){
+var self=this;
+return smalltalk.send(smalltalk.send(self['@view'], "_el", []), "_text", []);
+return self;}
+}),
+smalltalk.IngredientsWidget);
+
+
+smalltalk.addMethod(
+'_on_onClick_',
+smalltalk.method({
+selector: 'on:onClick:',
+fn: function (aModel, aBlock){
+var self=this;
+return smalltalk.send(smalltalk.send(self, "_new", []), "_initializeOn_onClick_", [aModel, aBlock]);
+return self;}
+}),
+smalltalk.IngredientsWidget.klass);
 
 
