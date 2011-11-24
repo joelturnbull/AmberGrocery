@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>D&D Tools</title>
+    <script src="../../js/amber.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/text.css" />
+    <link rel="stylesheet" href="css/960.css" />
+    <script type="text/javascript">
+    loadAmber({
+      files: ['Smackbone.js','DDModel.js','DDView.js','DDTest.js'],
+      prefix: 'projects/dd/js',
+      ready: function() {
+        $(function() {
+            smalltalk.Browser._open();
+        });
+    }}); 
+    </script>
+  </head>
+  <body>
+    <div id="container"></div>
+  </body>
+</html>
