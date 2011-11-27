@@ -19,19 +19,14 @@ Object subclass: #DDFactory
 participants
 
 	^ participants ifNil: [ 
-		participants := Participants with: ( Array 
+		participants := Array 
           		with: self participant
-          		with: self participantB )]
+          		with: ( Participant named: 'Asmedeus' )]
 !
 
 participant
 
 	^ participant ifNil: [ participant := Participant named: 'Thokul Longclaw' ]
-!
-
-participantB
-
-	^ participant ifNil: [ participant := Participant named: 'Asmedeus' ]
 ! !
 
 DDTest subclass: #ParticipantViewTest
@@ -74,63 +69,5 @@ testIsNamed
 	
 	model := Participant named: 'Thokul Longclaw'.
 	self assert: model name = 'Thokul Longclaw'.
-!
-
-testEquality
-| a b |
-	
-	a := Participant named: 'Thokul Longclaw'.
-	b := Participant named: 'Thokul Longclaw'.
-	self assert: a = b.
-! !
-
-DDTest subclass: #ParticipantsTest
-	instanceVariableNames: ''
-	category: 'DDTest'!
-
-!ParticipantsTest methodsFor: 'not yet classified'!
-
-testMoveUp
-| participants |
-	participants := factory participants.
-	self assert: participants first = factory participant.
-	self assert: participants second = factory participantB.
-	participants moveUp: factory participantB.
-	self assert: participants first = factory participantB.
-	self assert: participants second = factory participant.
-!
-
-testMoveUpFirst
-| participants |
-	participants := factory participants.
-	self assert: participants first = factory participant.
-	self assert: participants second = factory participantB.
-	participants moveUp: factory participant.
-	self assert: participants first = factory participantB.
-	self assert: participants second = factory participant.
-!
-
-testMoveUpMiddle
-| participants a b c d e |
-	participants := Participants new.
-	a := Participant named: 'a'.
-	b := Participant named: 'b'.
-	c := Participant named: 'c'.
-	d := Participant named: 'd'.
-	e := Participant named: 'e'.
-	participants add: a; add: b; add: c; add: d; add: e.
-	self assert: participants first = a.
-	self assert: participants second = b.
-	self assert: participants last = e.
-	participants moveUp: c.
-	self assert: participants first = a.
-	self assert: participants second = c.
-	self assert: participants last = e.
-!
-
-testNew
-| model |
-	model := Participants new.
-	self assert: model participants isEmpty.
 ! !
 
